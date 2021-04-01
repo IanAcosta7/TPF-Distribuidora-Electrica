@@ -8,3 +8,6 @@ Trabajo Práctico Final realizado en el Framework de Java **Spring** para la **U
 - Lombok
 - Spring Data JPA
 - H2 Database
+
+## Database Logical Model
+![Logical Model Image](README/SQL-Logical-Model.png)
