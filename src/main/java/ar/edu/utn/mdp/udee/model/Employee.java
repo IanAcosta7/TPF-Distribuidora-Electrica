@@ -1,18 +1,21 @@
-package ar.edu.utn.mdp.udee.models;
+package ar.edu.utn.mdp.udee.model;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Data
-@AllArgsConstructor
+@NoArgsConstructor
+@Entity
 public class Employee {
-    @Setter(AccessLevel.PRIVATE) private String username;
+    @Id
+    @GeneratedValue
+    private Integer id;
+    private String username;
+    private String password;
     private String name;
-    private String lastName;
+    private String lastname;
 
     @Override
     public boolean equals(Object o) {
