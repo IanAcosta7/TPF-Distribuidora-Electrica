@@ -3,6 +3,7 @@ package ar.edu.utn.mdp.udee.model;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 @Data
@@ -12,7 +13,9 @@ public class Employee {
     @Id
     @GeneratedValue
     private Integer id;
+    @NotNull(message = "Field username is required.")
     private String username;
+    @NotNull(message = "Field password is required.")
     private String password;
     private String name;
     private String lastname;
