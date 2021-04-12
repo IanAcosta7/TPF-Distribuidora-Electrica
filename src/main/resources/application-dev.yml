@@ -1,5 +1,9 @@
 spring:
     datasource:
-      url: localhost:3306/udee
+      url: jdbc:mysql://localhost:3308/udee
+      username: root
+      password: root
     jpa:
       show-sql: true
+      hibernate:
+        ddl-auto: create
