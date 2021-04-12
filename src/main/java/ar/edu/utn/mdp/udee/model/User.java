@@ -9,7 +9,7 @@ import java.util.Objects;
 @Data
 @NoArgsConstructor
 @Entity
-public class Employee {
+public class User {
     @Id
     @GeneratedValue
     private Integer id;
@@ -24,8 +24,8 @@ public class Employee {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Employee employee = (Employee) o;
-        return Objects.equals(username, employee.username);
+        User user = (User) o;
+        return Objects.equals(username, user.username);
     }
 
     @Override
