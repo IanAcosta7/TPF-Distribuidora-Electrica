@@ -1,6 +1,7 @@
 package ar.edu.utn.mdp.udee.controller;
 
 import ar.edu.utn.mdp.udee.model.User;
+import ar.edu.utn.mdp.udee.model.UserType;
 import ar.edu.utn.mdp.udee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,4 +37,18 @@ public class UserController {
         return userService.get();
     }
 
+    @PostMapping("/type")
+    public Integer addType(@RequestBody UserType userType) {
+        return userService.addType(userType);
+    }
+
+    @GetMapping("/type")
+    public List<UserType> getTypes() {
+        return userService.getTypes();
+    }
+
+    @PutMapping("/{id}/type/{typeId}")
+    public Integer addTypeToUser(@PathVariable Integer id, @PathVariable Integer typeId) {
+        return userService.addTypeToUser(id, typeId);
+    }
 }

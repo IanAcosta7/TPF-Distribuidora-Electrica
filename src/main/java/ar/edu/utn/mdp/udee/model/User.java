@@ -11,13 +11,16 @@ import java.util.Objects;
 @Entity
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_type_id", referencedColumnName = "id")
+    private UserType usertype;
     @NotNull(message = "Field username is required.")
     private String username;
     @NotNull(message = "Field password is required.")
     private String password;
-    private String name;
+    private String firstname;
     private String lastname;
 
     @Override
