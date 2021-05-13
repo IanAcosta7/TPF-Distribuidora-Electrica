@@ -14,7 +14,7 @@ public class Tariff {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tariff_type_id", referencedColumnName = "id")
@@ -22,5 +22,5 @@ public class Tariff {
 
     @NotNull(message = "Field value is required.")
     @Min(value = 0, message = "Field value must be a positive number.")
-    private Float value;
+    private float value;
 }

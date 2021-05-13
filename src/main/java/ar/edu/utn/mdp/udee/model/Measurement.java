@@ -18,7 +18,6 @@ public class Measurement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Id
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "electricMeter_id", referencedColumnName = "id")
     private ElectricMeter electricMeter;
