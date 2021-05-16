@@ -1,13 +1,12 @@
 package ar.edu.utn.mdp.udee.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -18,4 +17,7 @@ public class UserType {
     private Integer id;
     @NotNull(message = "Field typename is required.")
     private String typename;
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usertype", fetch = FetchType.LAZY)
+    List<User> users;
 }

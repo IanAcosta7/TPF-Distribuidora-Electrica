@@ -14,7 +14,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "usertype_id", referencedColumnName = "id")
     private UserType usertype;
     @NotNull(message = "Field username is required.")
     private String username;

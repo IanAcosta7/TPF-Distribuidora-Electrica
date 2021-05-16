@@ -8,10 +8,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Integer> {
     User getUserByUsernameAndPassword(String username, String password);
     @Modifying
-    @Query("update User set user_type_id = ?2 where id = ?1")
+    @Query("update User set usertype_id = ?2 where id = ?1")
     @Transactional
     Integer setUserType(Integer id, Integer typeId);
 }
