@@ -13,12 +13,10 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final UserTypeRepository userTypeRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserTypeRepository userTypeRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.userTypeRepository = userTypeRepository;
     }
 
     public Integer login(String username, String password) {
@@ -36,16 +34,8 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
-    public Integer addType(UserType userType) {
-        return userTypeRepository.save(userType).getId();
-    }
-
     public List<User> get() {
         return userRepository.findAll();
-    }
-
-    public List<UserType> getTypes() {
-        return userTypeRepository.findAll();
     }
 
     public Integer addTypeToUser(Integer id, Integer typeId) {

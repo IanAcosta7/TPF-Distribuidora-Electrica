@@ -3,6 +3,7 @@ package ar.edu.utn.mdp.udee.controller;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.model.UserType;
 import ar.edu.utn.mdp.udee.service.UserService;
+import ar.edu.utn.mdp.udee.service.UserTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,10 +14,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserTypeService userTypeService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserTypeService userTypeService) {
         this.userService = userService;
+        this.userTypeService = userTypeService;
     }
 
     @PostMapping("/login")
@@ -39,12 +42,12 @@ public class UserController {
 
     @PostMapping("/type")
     public Integer addType(@RequestBody UserType userType) {
-        return userService.addType(userType);
+        return userTypeService.addType(userType);
     }
 
     @GetMapping("/type")
     public List<UserType> getTypes() {
-        return userService.getTypes();
+        return userTypeService.getTypes();
     }
 
     @PutMapping("/{id}/type/{typeId}")
