@@ -8,6 +8,7 @@ import java.util.Objects;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 public class User {
     @Id
