@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.controller;
 
+import ar.edu.utn.mdp.udee.model.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.model.UserType;
 import ar.edu.utn.mdp.udee.service.UserService;
@@ -30,14 +31,15 @@ public class UserController {
         return userService.login(username, password);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public Integer add(@RequestBody User user) {
         return userService.add(user);
     }
 
-    @GetMapping("/")
-    public List<User> get() {
-        return userService.get();
+    @GetMapping
+    public PaginationResponse<User> get(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                        @RequestParam(value = "size", defaultValue = "50") Integer size) {
+        return userService.get(page, size);
     }
 
     @PostMapping("/type")

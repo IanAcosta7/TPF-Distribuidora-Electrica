@@ -1,11 +1,16 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.model.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,17 +61,20 @@ public class UserServiceTest {
     @Test
     public void getTest() {
         // Arrange
-        List<User> userList = new ArrayList<>();
-        userList.add(getUser());
-        Mockito.when(userRepository.findAll()).thenReturn(userList);
+        Integer page = 0;
+        Integer size = 1;
+        Pageable pageable = PageRequest.of(page, size);
+        List<User> content = new ArrayList<>();
+        content.add(getUser());
+        Page userPage = new PageImpl(content, pageable, size);
+        Mockito.when(userRepository.findAll(pageable)).thenReturn(userPage);
 
         // Act
-        List<User> result = userService.get();
+        PaginationResponse<User> result = userService.get(page, size);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(userList, result);
-        Assert.assertEquals(userList.size(), result.size());
+        Assert.assertEquals(content, result.getContent());
     }
 
     @Test
