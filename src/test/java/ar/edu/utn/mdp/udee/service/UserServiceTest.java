@@ -1,7 +1,8 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.PaginationResponse;
+import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
+import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +53,11 @@ public class UserServiceTest {
         Mockito.when(userRepository.save(user)).thenReturn(userReturned);
 
         // Act
-        Integer result = userService.add(user);
+        PostResponse result = userService.add(user);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(id, result);
+        Assert.assertEquals(HttpStatus.CREATED, result.getStatus());
     }
 
     @Test
