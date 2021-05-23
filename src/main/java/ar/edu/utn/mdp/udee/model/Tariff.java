@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @NoArgsConstructor
+@Table(name = "tariffs")
 public class Tariff {
 
     @Id
@@ -17,7 +18,7 @@ public class Tariff {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tariff_type_id", referencedColumnName = "id")
+    @JoinColumn(name = "tarifftypeid", referencedColumnName = "id")
     private TariffType tariffType;
 
     @NotNull(message = "Field value is required.")

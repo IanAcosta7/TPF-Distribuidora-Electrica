@@ -10,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
-@Entity
 @NoArgsConstructor
+@Entity
+@Table(name = "measurements")
 public class Measurement {
 
     @Id
@@ -19,11 +20,11 @@ public class Measurement {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "electricMeter_id", referencedColumnName = "id")
+    @JoinColumn(name = "electricmeterid", referencedColumnName = "id")
     private ElectricMeter electricMeter;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bill_id", referencedColumnName = "id")
+    @JoinColumn(name = "billid", referencedColumnName = "id")
     private Bill bill;
 
     @NotNull(message = "Field measure is required.")

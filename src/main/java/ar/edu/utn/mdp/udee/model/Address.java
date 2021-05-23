@@ -8,8 +8,9 @@ import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Data
-@Entity
 @NoArgsConstructor
+@Entity
+@Table(name = "addresses")
 public class Address {
 
     @Id
@@ -23,10 +24,10 @@ public class Address {
     private Integer number;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
+    @JoinColumn(name = "tariffid", referencedColumnName = "id")
     private List<Tariff> tariffs;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "electricMeter_id", referencedColumnName = "id")
+    @JoinColumn(name = "electricmeterid", referencedColumnName = "id")
     private ElectricMeter electricMeter;
 }

@@ -10,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
-@Entity
 @NoArgsConstructor
+@Entity
+@Table(name = "bills")
 public class Bill {
 
     @Id
@@ -19,7 +20,7 @@ public class Bill {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    @JoinColumn(name = "addressid", referencedColumnName = "id")
     private Address address;
 
     @NotNull(message = "Field date is required.")
@@ -31,7 +32,7 @@ public class Bill {
     private Float payed;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "clientid", referencedColumnName = "id")
     private User user;
 
 }

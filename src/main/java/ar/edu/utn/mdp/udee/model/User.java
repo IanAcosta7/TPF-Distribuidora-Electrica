@@ -10,12 +10,13 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usertype_id", referencedColumnName = "id")
+    @JoinColumn(name = "usertypeid", referencedColumnName = "id")
     private UserType usertype;
     @NotNull(message = "Field username is required.")
     private String username;

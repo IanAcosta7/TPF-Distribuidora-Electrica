@@ -3,15 +3,13 @@ package ar.edu.utn.mdp.udee.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "tariff_types")
 public class TariffType {
 
     @Id
