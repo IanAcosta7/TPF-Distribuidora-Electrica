@@ -25,11 +25,11 @@ public class Bill {
 
     @NotNull(message = "Field date is required.")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private Date date;
+    private Date billDate;
 
     @NotNull(message = "Field payed is required.")
     @Min(value = 0, message = "Field payed must be a positive number.")
-    private Float payed;
+    private Float amountPayed;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "clientid", referencedColumnName = "id")

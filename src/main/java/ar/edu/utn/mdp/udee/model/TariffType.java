@@ -17,5 +17,5 @@ public class TariffType {
     private Integer id;
 
     @NotBlank(message = "Field description cannot be empty.")
-    private String typename;
+    private String typeName;
 }

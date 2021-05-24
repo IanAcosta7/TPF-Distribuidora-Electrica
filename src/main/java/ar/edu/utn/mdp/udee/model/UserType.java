@@ -17,8 +17,8 @@ public class UserType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotNull(message = "Field typename is required.")
-    private String typename;
+    private String typeName;
     @JsonBackReference
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usertype", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType", fetch = FetchType.LAZY)
     List<User> users;
 }

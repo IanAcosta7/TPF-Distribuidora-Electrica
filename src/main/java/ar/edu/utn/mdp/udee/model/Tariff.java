@@ -20,10 +20,10 @@ public class Tariff {
     private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tarifftypeid", referencedColumnName = "id")
+    @JoinColumn(name = "tariff_type_id", referencedColumnName = "id")
     private TariffType tariffType;
 
     @NotNull(message = "Field value is required.")
     @Min(value = 0, message = "Field value must be a positive number.")
-    private float tariffvalue;
+    private float tariffValue;
 }

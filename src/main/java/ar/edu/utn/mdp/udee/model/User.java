@@ -16,14 +16,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "usertypeid", referencedColumnName = "id")
-    private UserType usertype;
+    @JoinColumn(name = "user_type_id", referencedColumnName = "id")
+    private UserType userType;
     @NotNull(message = "Field username is required.")
     private String username;
     @NotNull(message = "Field password is required.")
     private String password;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
 
     @Override
     public boolean equals(Object o) {

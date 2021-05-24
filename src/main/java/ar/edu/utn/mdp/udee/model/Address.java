@@ -24,10 +24,10 @@ public class Address {
     private Integer number;
 
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "tariffid", referencedColumnName = "id")
+    @JoinColumn(name = "tariff_id", referencedColumnName = "id")
     private List<Tariff> tariffs;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "electricmeterid", referencedColumnName = "id")
+    @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")
     private ElectricMeter electricMeter;
 }

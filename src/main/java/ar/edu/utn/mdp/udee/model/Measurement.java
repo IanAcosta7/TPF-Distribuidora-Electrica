@@ -20,11 +20,11 @@ public class Measurement {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "electricmeterid", referencedColumnName = "id")
+    @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")
     private ElectricMeter electricMeter;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "billid", referencedColumnName = "id")
+    @JoinColumn(name = "bill_id", referencedColumnName = "id")
     private Bill bill;
 
     @NotNull(message = "Field measure is required.")
@@ -33,5 +33,5 @@ public class Measurement {
 
     @NotNull(message = "Field date is required.")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private Date date;
+    private Date measureDateTime;
 }
