@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.controller.UserController;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.model.response.PostResponse;
@@ -36,7 +37,10 @@ public class UserService {
     public PostResponse add(User userToAdd) {
         User user = userRepository.save(userToAdd);
         return new PostResponse(
-                EntityURLBuilder.buildURL(User.class.getSimpleName(), user.getId()),
+                EntityURLBuilder.buildURL(
+                        UserController.PATH,
+                        user.getId()
+                ),
                 HttpStatus.CREATED
         );
     }

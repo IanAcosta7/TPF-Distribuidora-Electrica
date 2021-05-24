@@ -7,7 +7,7 @@ public class EntityURLBuilder {
     public static String buildURL(final String entity, final Integer id) {
         return ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path("/{entity}/{id}")
+                .path("{entity}/{id}")
                 .buildAndExpand(entity, id)
                 .toUriString();
     }

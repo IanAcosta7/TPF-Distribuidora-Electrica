@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.controller.UserController;
 import ar.edu.utn.mdp.udee.model.UserType;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.response.PostResponse;
@@ -26,7 +27,13 @@ public class UserTypeService {
 
     public PostResponse addType(UserType userTypeToAdd) {
         UserType userType = userTypeRepository.save(userTypeToAdd);
-        return new PostResponse(EntityURLBuilder.buildURL(UserType.class.getSimpleName(), userType.getId()), HttpStatus.CREATED);
+        return new PostResponse(
+                EntityURLBuilder.buildURL(
+                        UserController.PATH + UserController.TYPE_PATH,
+                        userType.getId()
+                ),
+                HttpStatus.CREATED
+        );
     }
 
     public PaginationResponse<UserType> getTypes(Integer page, Integer size) {

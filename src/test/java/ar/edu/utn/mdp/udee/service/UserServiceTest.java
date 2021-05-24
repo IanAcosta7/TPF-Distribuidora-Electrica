@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.controller.UserController;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.model.response.PostResponse;
@@ -55,7 +56,7 @@ public class UserServiceTest {
         User userReturned = getUser();
         MockedStatic<EntityURLBuilder> entityURLBuilderStaticMock = Mockito.mockStatic(EntityURLBuilder.class);
         Mockito.when(userRepositoryMock.save(user)).thenReturn(userReturned);
-        entityURLBuilderStaticMock.when(() -> EntityURLBuilder.buildURL(User.class.getSimpleName(), id)).thenReturn(responseURL);
+        entityURLBuilderStaticMock.when(() -> EntityURLBuilder.buildURL(UserController.PATH, id)).thenReturn(responseURL);
 
         // Act
         PostResponse result = userService.add(user);

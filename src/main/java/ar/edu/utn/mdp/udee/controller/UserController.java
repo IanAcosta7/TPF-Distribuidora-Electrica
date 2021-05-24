@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping(UserController.PATH)
 public class UserController {
+
+    final public static String PATH = "/User";
+    final public static String TYPE_PATH = "/Type";
 
     private final UserService userService;
     private final UserTypeService userTypeService;
@@ -48,18 +51,18 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PostMapping("/type")
+    @PostMapping(TYPE_PATH)
     public PostResponse addType(@RequestBody UserType userType) {
         return userTypeService.addType(userType);
     }
 
-    @GetMapping("/type")
+    @GetMapping(TYPE_PATH)
     public PaginationResponse<UserType> getTypes(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                  @RequestParam(value = "size", defaultValue = "50") Integer size) {
         return userTypeService.getTypes(page, size);
     }
 
-    @PutMapping("/{id}/type/{typeId}")
+    @PutMapping("/{id}" + TYPE_PATH + "/{typeId}")
     public Integer addTypeToUser(@PathVariable Integer id, @PathVariable Integer typeId) {
         return userService.addTypeToUser(id, typeId);
     }
