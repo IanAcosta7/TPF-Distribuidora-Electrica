@@ -1,8 +1,13 @@
 package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.TariffType;
+import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.TariffTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,8 +22,10 @@ public class TariffTypeService {
         this.tariffTypeRepository = tariffTypeRepository;
     }
 
-    public List<TariffType> getTariffTypes() {
-        return tariffTypeRepository.findAll();
+    public PaginationResponse<TariffType> getTariffTypes(Integer pageNumber, Integer pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<TariffType> tariffTypePage = tariffTypeRepository.findAll(pageable);
+        return new PaginationResponse<>(tariffTypePage.getContent(), tariffTypePage.getTotalPages(), tariffTypePage.getTotalElements());
     }
 
     public TariffType getTariffTypeById(Integer id) {

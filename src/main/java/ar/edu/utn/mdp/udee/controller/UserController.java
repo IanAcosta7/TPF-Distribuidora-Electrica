@@ -54,8 +54,9 @@ public class UserController {
     }
 
     @GetMapping("/type")
-    public List<UserType> getTypes() {
-        return userTypeService.getTypes();
+    public PaginationResponse<UserType> getTypes(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(value = "size", defaultValue = "50") Integer size) {
+        return userTypeService.getTypes(page, size);
     }
 
     @PutMapping("/{id}/type/{typeId}")

@@ -4,9 +4,11 @@ import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
+import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,20 +23,20 @@ import static org.mockito.Mockito.mock;
 
 public class UserServiceTest {
 
-    UserRepository userRepository;
+    UserRepository userRepositoryMock;
     UserService userService;
 
     @Before
     public void setUp() {
-        userRepository = mock(UserRepository.class);
-        userService = new UserService(userRepository);
+        userRepositoryMock = mock(UserRepository.class);
+        userService = new UserService(userRepositoryMock);
     }
 
     @Test
     public void loginTest() {
         // Arrange
         User user = getUser();
-        Mockito.when(userRepository.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+        Mockito.when(userRepositoryMock.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
 
         // Act
         Integer result = userService.login(user.getUsername(), user.getPassword());
@@ -47,10 +49,13 @@ public class UserServiceTest {
     @Test
     public void addTest() {
         // Arrange
+        String responseURL = "testurl";
         Integer id = 1;
         User user = new User(id, null, "Test", "Test", "Test", "Test");
         User userReturned = getUser();
-        Mockito.when(userRepository.save(user)).thenReturn(userReturned);
+        MockedStatic<EntityURLBuilder> entityURLBuilderStaticMock = Mockito.mockStatic(EntityURLBuilder.class);
+        Mockito.when(userRepositoryMock.save(user)).thenReturn(userReturned);
+        entityURLBuilderStaticMock.when(() -> EntityURLBuilder.buildURL(User.class.getSimpleName(), id)).thenReturn(responseURL);
 
         // Act
         PostResponse result = userService.add(user);
@@ -63,20 +68,18 @@ public class UserServiceTest {
     @Test
     public void getTest() {
         // Arrange
-        Integer page = 0;
-        Integer size = 1;
-        Pageable pageable = PageRequest.of(page, size);
-        List<User> content = new ArrayList<>();
-        content.add(getUser());
-        Page userPage = new PageImpl(content, pageable, size);
-        Mockito.when(userRepository.findAll(pageable)).thenReturn(userPage);
+        int pageNumber = 0;
+        int pageSize = 1;
+        Pageable pageable = getPageable(pageNumber, pageSize);
+        Page<User> userPage = getUserPage(pageable);
+        Mockito.when(userRepositoryMock.findAll(pageable)).thenReturn(userPage);
 
         // Act
-        PaginationResponse<User> result = userService.get(page, size);
+        PaginationResponse<User> result = userService.get(pageNumber, pageSize);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(content, result.getContent());
+        Assert.assertEquals(userPage.getContent(), result.getContent());
     }
 
     @Test
@@ -84,7 +87,7 @@ public class UserServiceTest {
         // Arrange
         int id = 1;
         int typeId = 2;
-        Mockito.when(userRepository.setUserType(id, typeId)).thenReturn(id);
+        Mockito.when(userRepositoryMock.setUserType(id, typeId)).thenReturn(id);
 
         // Act
         int result = userService.addTypeToUser(id, typeId);
@@ -96,5 +99,17 @@ public class UserServiceTest {
 
     public User getUser() {
         return new User(1, null, "user", "password", "Test", "Test");
+    }
+
+    public Page<User> getUserPage(Pageable pageable) {
+        List<User> content = new ArrayList<>();
+
+        content.add(getUser());
+
+        return new PageImpl<>(content, pageable, pageable.getPageSize());
+    }
+
+    public Pageable getPageable(Integer pageNumber, Integer pageSize) {
+        return PageRequest.of(pageNumber, pageSize);
     }
 }

@@ -1,3 +1,7 @@
+DROP DATABASE udee;
+CREATE DATABASE udee;
+USE udee;
+
 CREATE TABLE IF NOT EXISTS tariff_types (
     id INT NOT NULL AUTO_INCREMENT,
     typeName VARCHAR(50),

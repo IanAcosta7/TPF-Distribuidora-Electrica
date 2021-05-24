@@ -2,6 +2,7 @@ package ar.edu.utn.mdp.udee.controller;
 
 import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.TariffType;
+import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.TariffService;
 import ar.edu.utn.mdp.udee.service.TariffTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,9 @@ public class TariffController {
     }
 
     @GetMapping
-    public List<Tariff> getTariffs() {
-        return tariffService.getTariffs();
+    public PaginationResponse<Tariff> getTariffs(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                 @RequestParam(name = "size", defaultValue = "50") Integer size) {
+        return tariffService.get(page, size);
     }
 
     @GetMapping("/{id}")
@@ -38,8 +40,9 @@ public class TariffController {
     }
 
     @GetMapping("/type")
-    public List<TariffType> getTariffTypes() {
-        return tariffTypeService.getTariffTypes();
+    public PaginationResponse<TariffType> getTariffTypes(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                         @RequestParam(value = "size", defaultValue = "50") Integer size) {
+        return tariffTypeService.getTariffTypes(page, size);
     }
 
     @GetMapping("/type/{id}")
