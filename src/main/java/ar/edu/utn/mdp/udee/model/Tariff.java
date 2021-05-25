@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "tariffs")
 public class Tariff {
 
     @Id
@@ -22,5 +25,5 @@ public class Tariff {
 
     @NotNull(message = "Field value is required.")
     @Min(value = 0, message = "Field value must be a positive number.")
-    private float value;
+    private float tariffValue;
 }

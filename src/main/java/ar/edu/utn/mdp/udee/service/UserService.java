@@ -1,14 +1,19 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
-import ar.edu.utn.mdp.udee.model.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
+import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
+import ar.edu.utn.mdp.udee.controller.UserController;
+import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
+import ar.edu.utn.mdp.udee.model.UserType;
+import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
+import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,15 +39,26 @@ public class UserService {
         return id;
     }
 
-    public Integer add(UserDTO userDTO) {
-        return userRepository.save(conversionService.convert(userDTO, User.class)).getId();
+    public PostResponse add(UserDTO userDTO) {
+        User user = userRepository.save(conversionService.convert(userDTO, User.class));
+        return new PostResponse(
+                EntityURLBuilder.buildURL(
+                        UserController.PATH,
+                        user.getId()
+                ),
+                HttpStatus.CREATED
+        );
     }
 
     public PaginationResponse<UserDTO> get(Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<User> userPage = userRepository.findAll(pageable);
-        userPage.map(user -> conversionService.convert(user, UserDTO.class));
-        return new PaginationResponse(userPage.getContent(), userPage.getTotalPages(), userPage.getTotalElements());
+        Page<UserDTO> userDTOPage = userPage.map(user -> conversionService.convert(user, UserDTO.class));
+        return new PaginationResponse<>(userDTOPage.getContent(), userDTOPage.getTotalPages(), userDTOPage.getTotalElements());
+    }
+
+    public User getById(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     public Integer addTypeToUser(Integer id, Integer typeId) {

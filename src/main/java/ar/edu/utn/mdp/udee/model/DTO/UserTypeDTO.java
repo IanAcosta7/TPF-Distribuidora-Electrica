@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserTypeDTO {
     private Integer id;
-    private String typename;
+    private String typeName;
 }

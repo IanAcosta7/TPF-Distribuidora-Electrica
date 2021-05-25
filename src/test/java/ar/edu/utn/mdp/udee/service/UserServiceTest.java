@@ -2,21 +2,28 @@ package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
 import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
-import ar.edu.utn.mdp.udee.model.PaginationResponse;
+import ar.edu.utn.mdp.udee.controller.UserController;
+import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
+import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
+import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.core.convert.ConversionService;
-import org.springframework.core.convert.TypeDescriptor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
 public class UserServiceTest {
@@ -49,37 +56,39 @@ public class UserServiceTest {
     @Test
     public void addTest() {
         // Arrange
+        String responseURL = "testurl";
         Integer id = 1;
         User user = getUserIdNull();
         User userReturned = getUser();
         UserDTO userDTO = getUserDTOIdNull();
+        MockedStatic<EntityURLBuilder> entityURLBuilderStaticMock = Mockito.mockStatic(EntityURLBuilder.class);
         Mockito.when(userRepositoryMock.save(user)).thenReturn(userReturned);
+        Mockito.when(conversionServiceMock.convert(Mockito.any(UserDTO.class), eq(User.class))).thenReturn(getUser());
+        entityURLBuilderStaticMock.when(() -> EntityURLBuilder.buildURL(UserController.PATH, id)).thenReturn(responseURL);
 
         // Act
-        Integer result = userService.add(userDTO);
+        PostResponse result = userService.add(userDTO);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(id, result);
+        Assert.assertEquals(HttpStatus.CREATED, result.getStatus());
     }
 
     @Test
     public void getTest() {
         // Arrange
-        Integer page = 0;
-        Integer size = 1;
-        Pageable pageable = PageRequest.of(page, size);
-        List<UserDTO> content = new ArrayList<>();
-        content.add(getUserDTO());
-        Page userPage = new PageImpl(content, pageable, size);
+        int pageNumber = 0;
+        int pageSize = 1;
+        Pageable pageable = getPageable(pageNumber, pageSize);
+        Page<User> userPage = getUserPage(pageable);
+        Mockito.when(conversionServiceMock.convert(Mockito.any(User.class), eq(UserDTO.class))).thenReturn(getUserDTO());
         Mockito.when(userRepositoryMock.findAll(pageable)).thenReturn(userPage);
 
         // Act
-        PaginationResponse<UserDTO> result = userService.get(page, size);
+        PaginationResponse<UserDTO> result = userService.get(pageNumber, pageSize);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(content, result.getContent());
     }
 
     @Test
@@ -107,6 +116,18 @@ public class UserServiceTest {
 
     public User getUser() {
         return new User(1, null, "user", "password", "Test", "Test");
+    }
+
+    public Page<User> getUserPage(Pageable pageable) {
+        List<User> content = new ArrayList<>();
+
+        content.add(getUser());
+
+        return new PageImpl(content, pageable, pageable.getPageSize());
+    }
+
+    public Pageable getPageable(Integer pageNumber, Integer pageSize) {
+        return PageRequest.of(pageNumber, pageSize);
     }
 
     public User getUserIdNull() {

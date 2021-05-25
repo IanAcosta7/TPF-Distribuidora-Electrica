@@ -11,12 +11,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
+@Table(name = "user_types")
 public class UserType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @NotNull(message = "Field typename is required.")
-    private String typename;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "usertype", fetch = FetchType.LAZY)
+    private String typeName;
+    @JsonBackReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userType", fetch = FetchType.LAZY)
     List<User> users;
 }

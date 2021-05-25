@@ -10,8 +10,9 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
-@Entity
 @NoArgsConstructor
+@Entity
+@Table(name = "measurements")
 public class Measurement {
 
     @Id
@@ -19,7 +20,7 @@ public class Measurement {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "electricMeter_id", referencedColumnName = "id")
+    @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")
     private ElectricMeter electricMeter;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,5 +33,5 @@ public class Measurement {
 
     @NotNull(message = "Field date is required.")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private Date date;
+    private Date measureDateTime;
 }
