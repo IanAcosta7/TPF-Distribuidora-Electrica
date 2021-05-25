@@ -39,15 +39,9 @@ public class UserService {
         return id;
     }
 
-    public PostResponse add(UserDTO userDTO) {
+    public UserDTO add(UserDTO userDTO) {
         User user = userRepository.save(conversionService.convert(userDTO, User.class));
-        return new PostResponse(
-                EntityURLBuilder.buildURL(
-                        UserController.PATH,
-                        user.getId()
-                ),
-                HttpStatus.CREATED
-        );
+        return conversionService.convert(user, UserDTO.class);
     }
 
     public PaginationResponse<UserDTO> get(Integer page, Integer size) {
@@ -57,8 +51,8 @@ public class UserService {
         return new PaginationResponse<>(userDTOPage.getContent(), userDTOPage.getTotalPages(), userDTOPage.getTotalElements());
     }
 
-    public User getById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+    public UserDTO getById(Integer id) {
+        return conversionService.convert(userRepository.findById(id).orElse(null), UserDTO.class);
     }
 
     public Integer addTypeToUser(Integer id, Integer typeId) {

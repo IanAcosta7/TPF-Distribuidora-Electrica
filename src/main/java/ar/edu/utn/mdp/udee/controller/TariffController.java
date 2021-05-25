@@ -7,6 +7,7 @@ import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.service.TariffService;
 import ar.edu.utn.mdp.udee.service.TariffTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,8 @@ public class TariffController {
     final public static String PATH = "/Tariff";
     final public static String TYPE_PATH = "/Type";
 
-    private TariffService tariffService;
-    private TariffTypeService tariffTypeService;
+    private final TariffService tariffService;
+    private final TariffTypeService tariffTypeService;
 
     @Autowired
     public TariffController(TariffService tariffService, TariffTypeService tariffTypeService) {
@@ -34,8 +35,8 @@ public class TariffController {
     }
 
     @GetMapping("/{id}")
-    public Tariff getTariffById(@PathVariable Integer id) {
-        return tariffService.getTariffById(id);
+    public ResponseEntity<Tariff> getTariffById(@PathVariable Integer id) {
+        return ResponseEntity.ok(tariffService.getTariffById(id));
     }
 
     @PostMapping
@@ -50,8 +51,8 @@ public class TariffController {
     }
 
     @GetMapping(TYPE_PATH + "/{id}")
-    public TariffType getTariffTypeById(@PathVariable Integer id) {
-        return tariffTypeService.getTariffTypeById(id);
+    public ResponseEntity<TariffType> getTariffTypeById(@PathVariable Integer id) {
+        return ResponseEntity.ok(tariffTypeService.getTariffTypeById(id));
     }
 
     @PostMapping(TYPE_PATH)
