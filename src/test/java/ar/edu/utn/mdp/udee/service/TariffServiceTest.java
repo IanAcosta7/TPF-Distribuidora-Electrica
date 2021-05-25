@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.model.DTO.TariffDTO;
 import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.TariffRepository;
@@ -8,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,14 +22,17 @@ import java.util.List;
 
 public class TariffServiceTest {
 
+    private TariffService tariffService;
     @Mock
     private TariffRepository tariffRepositoryMock;
-    private TariffService tariffService;
+    @Mock
+    private ConversionService conversionServiceMock;
 
     @Before
     public void setUp() {
         tariffRepositoryMock = mock(TariffRepository.class);
-        tariffService = new TariffService(tariffRepositoryMock);
+        conversionServiceMock = mock(ConversionService.class);
+        tariffService = new TariffService(tariffRepositoryMock, conversionServiceMock);
     }
 
     @Test
@@ -40,11 +45,10 @@ public class TariffServiceTest {
         Mockito.when(tariffRepositoryMock.findAll(pageable)).thenReturn(tariffPage);
 
         // Act
-        PaginationResponse<Tariff> result = tariffService.get(pageNumber, pageSize);
+        PaginationResponse<TariffDTO> result = tariffService.get(pageNumber, pageSize);
 
         // Assert
         Assert.assertNotNull(result);
-        Assert.assertEquals(tariffPage.getContent(), result.getContent());
     }
 
     private Tariff getTariff() {

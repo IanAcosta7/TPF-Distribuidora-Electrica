@@ -1,16 +1,16 @@
 package ar.edu.utn.mdp.udee.controller;
 
-import ar.edu.utn.mdp.udee.model.Tariff;
-import ar.edu.utn.mdp.udee.model.TariffType;
+import ar.edu.utn.mdp.udee.model.DTO.TariffDTO;
+import ar.edu.utn.mdp.udee.model.DTO.TariffTypeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
-import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.service.TariffService;
 import ar.edu.utn.mdp.udee.service.TariffTypeService;
+import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.net.URI;
 
 @RestController
 @RequestMapping(TariffController.PATH)
@@ -29,34 +29,50 @@ public class TariffController {
     }
 
     @GetMapping
-    public PaginationResponse<Tariff> getTariffs(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                 @RequestParam(name = "size", defaultValue = "50") Integer size) {
-        return tariffService.get(page, size);
+    public ResponseEntity<PaginationResponse<TariffDTO>> getTariffs(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                    @RequestParam(name = "size", defaultValue = "50") Integer size) {
+        return ResponseEntity.ok(tariffService.get(page, size));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tariff> getTariffById(@PathVariable Integer id) {
+    public ResponseEntity<TariffDTO> getTariffById(@PathVariable Integer id) {
         return ResponseEntity.ok(tariffService.getTariffById(id));
     }
 
     @PostMapping
-    public PostResponse addTariff(@RequestBody Tariff tariff) {
-        return tariffService.addTariff(tariff);
+    public ResponseEntity<TariffDTO> addTariff(@RequestBody TariffDTO tariffDTO) {
+        TariffDTO tariffDTOAdded = tariffService.addTariff(tariffDTO);
+        return ResponseEntity.created(
+                URI.create(
+                        EntityURLBuilder.buildURL(
+                                TariffController.PATH,
+                                tariffDTOAdded.getId()
+                        )
+                )
+        ).body(tariffDTOAdded);
     }
 
     @GetMapping(TYPE_PATH)
-    public PaginationResponse<TariffType> getTariffTypes(@RequestParam(value = "page", defaultValue = "0") Integer page,
-                                                         @RequestParam(value = "size", defaultValue = "50") Integer size) {
-        return tariffTypeService.getTariffTypes(page, size);
+    public ResponseEntity<PaginationResponse<TariffTypeDTO>> getTariffTypes(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                                            @RequestParam(value = "size", defaultValue = "50") Integer size) {
+        return ResponseEntity.ok(tariffTypeService.getTariffTypes(page, size));
     }
 
     @GetMapping(TYPE_PATH + "/{id}")
-    public ResponseEntity<TariffType> getTariffTypeById(@PathVariable Integer id) {
+    public ResponseEntity<TariffTypeDTO> getTariffTypeById(@PathVariable Integer id) {
         return ResponseEntity.ok(tariffTypeService.getTariffTypeById(id));
     }
 
     @PostMapping(TYPE_PATH)
-    public PostResponse addTariffType(@RequestBody TariffType tariffType) {
-        return tariffTypeService.addTariffType(tariffType);
+    public ResponseEntity<TariffTypeDTO> addTariffType(@RequestBody TariffTypeDTO tariffTypeDTO) {
+        TariffTypeDTO tariffTypeDTOAdded = tariffTypeService.addTariffType(tariffTypeDTO);
+        return ResponseEntity.created(
+                URI.create(
+                        EntityURLBuilder.buildURL(
+                                TariffController.PATH + TariffController.TYPE_PATH,
+                                tariffTypeDTOAdded.getId()
+                        )
+                )
+        ).body(tariffTypeDTOAdded);
     }
 }
