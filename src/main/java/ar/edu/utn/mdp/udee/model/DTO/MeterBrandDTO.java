@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TariffDTO {
+public class MeterBrandDTO {
     private Integer id;
-    private TariffTypeDTO tariffType;
-    private float tariffValue;
+    private String brandName;
 }

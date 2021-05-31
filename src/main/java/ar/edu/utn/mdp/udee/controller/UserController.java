@@ -1,11 +1,8 @@
 package ar.edu.utn.mdp.udee.controller;
 
 import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
-import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
-import ar.edu.utn.mdp.udee.model.UserType;
-import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.service.UserService;
 import ar.edu.utn.mdp.udee.service.UserTypeService;
 import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;

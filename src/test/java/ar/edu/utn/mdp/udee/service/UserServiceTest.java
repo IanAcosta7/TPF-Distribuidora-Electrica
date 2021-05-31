@@ -5,12 +5,12 @@ import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
 import ar.edu.utn.mdp.udee.controller.UserController;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
-import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
 import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.core.convert.ConversionService;
@@ -18,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +25,14 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 
+@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class UserServiceTest {
 
     UserRepository userRepositoryMock;
     ConversionService conversionServiceMock;
     UserService userService;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         userRepositoryMock = mock(UserRepository.class);
         conversionServiceMock = mock(ConversionService.class);

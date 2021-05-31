@@ -49,8 +49,8 @@ CREATE TABLE IF NOT EXISTS meter_models (
 
 CREATE TABLE IF NOT EXISTS electric_meters (
     id INT NOT NULL AUTO_INCREMENT,
+    model_id INT,
     serial_number VARCHAR(50),
-    model_id INT NOT NULL,
     CONSTRAINT PK_electric_meters PRIMARY KEY (id),
     CONSTRAINT FK_electric_meters_meter_models FOREIGN KEY (model_id) REFERENCES meter_models(id)
 );
@@ -87,9 +87,9 @@ CREATE TABLE IF NOT EXISTS bills (
 CREATE TABLE IF NOT EXISTS measurements (
     id INT NOT NULL AUTO_INCREMENT,
     bill_id INT,
-    electric_meter_d INT,
-    measure FLOAT,
-    measure_date_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    electric_meter_id INT,
+    measure FLOAT NOT NULL,
+    measure_date_time DATETIME,
     CONSTRAINT PK_measurements PRIMARY KEY (id),
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id)
 );

@@ -5,8 +5,9 @@ import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.TariffRepository;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.core.convert.ConversionService;
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.mock;
 import java.util.ArrayList;
 import java.util.List;
 
+@TestInstance(value = TestInstance.Lifecycle.PER_CLASS)
 public class TariffServiceTest {
 
     private TariffService tariffService;
@@ -28,7 +30,7 @@ public class TariffServiceTest {
     @Mock
     private ConversionService conversionServiceMock;
 
-    @Before
+    @BeforeAll
     public void setUp() {
         tariffRepositoryMock = mock(TariffRepository.class);
         conversionServiceMock = mock(ConversionService.class);

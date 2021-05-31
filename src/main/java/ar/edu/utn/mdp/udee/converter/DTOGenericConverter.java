@@ -1,13 +1,9 @@
 package ar.edu.utn.mdp.udee.converter;
 
-import ar.edu.utn.mdp.udee.model.DTO.TariffDTO;
-import ar.edu.utn.mdp.udee.model.DTO.TariffTypeDTO;
-import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
-import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
-import ar.edu.utn.mdp.udee.model.Tariff;
-import ar.edu.utn.mdp.udee.model.TariffType;
-import ar.edu.utn.mdp.udee.model.User;
-import ar.edu.utn.mdp.udee.model.UserType;
+import ar.edu.utn.mdp.udee.model.*;
+import ar.edu.utn.mdp.udee.model.DTO.*;
+import ar.edu.utn.mdp.udee.model.DTO.Measurement.MeasurementDTO;
+import ar.edu.utn.mdp.udee.model.DTO.Measurement.NewMeasurementDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
@@ -36,7 +32,13 @@ public class DTOGenericConverter implements GenericConverter {
                 new ConvertiblePair(Tariff.class, TariffDTO.class),
                 new ConvertiblePair(TariffDTO.class, Tariff.class),
                 new ConvertiblePair(TariffType.class, TariffTypeDTO.class),
-                new ConvertiblePair(TariffTypeDTO.class, TariffType.class)
+                new ConvertiblePair(TariffTypeDTO.class, TariffType.class),
+                // Measurement
+                new ConvertiblePair(NewMeasurementDTO.class, Measurement.class),
+                new ConvertiblePair(Measurement.class, MeasurementDTO.class),
+                //ElectricMeter
+                new ConvertiblePair(ElectricMeter.class, ElectricMeterDTO.class),
+                new ConvertiblePair(ElectricMeterDTO.class, ElectricMeter.class)
         };
         return Set.of(convertiblePairs);
     }

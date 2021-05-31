@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "electric_meters")
 public class ElectricMeter {
@@ -15,14 +16,9 @@ public class ElectricMeter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Setter(AccessLevel.NONE)
-    private UUID serialNumber = UUID.randomUUID();
-
-    @NotNull(message = "Field brand is required.")
-    private String brand;
-
-    @NotNull(message = "Field model is required.")
-    private String model;
+    private String serialNumber;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "model_id", referencedColumnName = "id")
+    private MeterModel meterModel;
 
 }

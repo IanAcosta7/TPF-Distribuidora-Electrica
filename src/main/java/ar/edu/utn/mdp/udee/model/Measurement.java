@@ -1,6 +1,7 @@
 package ar.edu.utn.mdp.udee.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "measurements")
 public class Measurement {
@@ -20,18 +22,17 @@ public class Measurement {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")
-    private ElectricMeter electricMeter;
-
-    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bill_id", referencedColumnName = "id")
     private Bill bill;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")
+    private ElectricMeter electricMeter;
 
     @NotNull(message = "Field measure is required.")
     @Min(value = 0, message = "Field measure must be a positive number.")
     private Float measure;
 
-    @NotNull(message = "Field date is required.")
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date measureDateTime;
 }
