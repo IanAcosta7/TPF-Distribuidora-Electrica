@@ -56,16 +56,12 @@ public class UserServiceTest {
     @Test
     public void addTest() {
         // Arrange
-        String responseURL = "testurl";
-        Integer id = 1;
         User user = getUserIdNull();
         User userReturned = getUser();
         UserDTO userDTO = getUserDTOIdNull();
-        MockedStatic<EntityURLBuilder> entityURLBuilderStaticMock = Mockito.mockStatic(EntityURLBuilder.class);
         Mockito.when(userRepositoryMock.save(user)).thenReturn(userReturned);
         Mockito.when(conversionServiceMock.convert(Mockito.any(UserDTO.class), eq(User.class))).thenReturn(getUser());
         Mockito.when(conversionServiceMock.convert(Mockito.any(User.class), eq(UserDTO.class))).thenReturn(getUserDTO());
-        entityURLBuilderStaticMock.when(() -> EntityURLBuilder.buildURL(UserController.PATH, id)).thenReturn(responseURL);
 
         // Act
         UserDTO result = userService.add(userDTO);
