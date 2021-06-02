@@ -45,4 +45,7 @@ public class UserTypeService {
         );
     }
 
+    public UserTypeDTO getById(Integer id) {
+        return conversionService.convert(userTypeRepository.findById(id), UserTypeDTO.class);
+    }
 }

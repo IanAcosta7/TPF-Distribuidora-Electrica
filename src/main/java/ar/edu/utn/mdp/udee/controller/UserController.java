@@ -85,4 +85,9 @@ public class UserController {
     public Integer addTypeToUser(@PathVariable Integer id, @PathVariable Integer typeId) {
         return userService.addTypeToUser(id, typeId);
     }
+
+    @GetMapping(TYPE_PATH + "/{id}")
+    public ResponseEntity<UserTypeDTO> getUserTypeById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userTypeService.getById(id));
+    }
 }

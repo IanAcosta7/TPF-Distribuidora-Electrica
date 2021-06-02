@@ -25,7 +25,7 @@ public class MeasurementController {
     }
 
     @PostMapping
-    private ResponseEntity<MeasurementDTO> add(@RequestBody NewMeasurementDTO newMeasurementDTO) {
+    public ResponseEntity<MeasurementDTO> add(@RequestBody NewMeasurementDTO newMeasurementDTO) {
         MeasurementDTO measurementDTO = measurementService.addMeasurement(newMeasurementDTO);
         return ResponseEntity.created(
                 URI.create(
@@ -38,7 +38,7 @@ public class MeasurementController {
     }
 
     @GetMapping
-    private ResponseEntity<PaginationResponse<MeasurementDTO>> getAll(
+    public ResponseEntity<PaginationResponse<MeasurementDTO>> getAll(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "50") Integer size
     ) {
@@ -46,7 +46,7 @@ public class MeasurementController {
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<MeasurementDTO> getById(@PathVariable Integer id) {
+    public ResponseEntity<MeasurementDTO> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(measurementService.getById(id));
     }
 
