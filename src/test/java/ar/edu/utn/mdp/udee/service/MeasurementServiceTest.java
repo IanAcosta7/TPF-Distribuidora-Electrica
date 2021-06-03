@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -83,15 +84,15 @@ public class MeasurementServiceTest {
     }
 
     private NewMeasurementDTO getNewMeasurementDTO() {
-        return new NewMeasurementDTO(1, new Date(0), 0.5f);
+        return new NewMeasurementDTO("Test", 0.5f, LocalDateTime.now().toString(), "Test");
     }
 
     private MeasurementDTO getMeasurementDTO() {
-        return new MeasurementDTO(1, null, null, 0.5f, new Date(0));
+        return new MeasurementDTO(1, null, null, 0.5f, LocalDateTime.now());
     }
 
     private Measurement getMeasurement() {
-        return new Measurement(1, null, null, 0.5f, new Date(0));
+        return new Measurement(1, null, null, 0.5f, LocalDateTime.now());
     }
 
     private Page<Measurement> getMeasurementPage(Pageable pageable) {

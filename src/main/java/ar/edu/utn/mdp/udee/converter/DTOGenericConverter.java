@@ -9,6 +9,8 @@ import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Component
@@ -45,6 +47,19 @@ public class DTOGenericConverter implements GenericConverter {
 
     @Override
     public Object convert(Object o, TypeDescriptor sourceType, TypeDescriptor targetType) {
-        return modelMapper.map(o, targetType.getType());
+
+        Object result = modelMapper.map(o, targetType.getType());
+
+        if (sourceType.equals(TypeDescriptor.valueOf(NewMeasurementDTO.class)) && targetType.equals(TypeDescriptor.valueOf(Measurement.class))) {
+            NewMeasurementDTO input = (NewMeasurementDTO)o;
+
+            Measurement output = new Measurement();
+            output.setMeasure(input.getValue());
+            output.setMeasureDateTime(LocalDateTime.parse(input.getDate()));
+
+            result = output;
+        }
+
+        return result;
     }
 }

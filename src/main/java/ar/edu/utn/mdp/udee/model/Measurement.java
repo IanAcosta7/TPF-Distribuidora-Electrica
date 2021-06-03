@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -34,5 +35,5 @@ public class Measurement {
     private Float measure;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
-    private Date measureDateTime;
+    private LocalDateTime measureDateTime;
 }

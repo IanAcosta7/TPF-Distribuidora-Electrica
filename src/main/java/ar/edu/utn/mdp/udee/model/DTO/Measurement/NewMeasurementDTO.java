@@ -11,7 +11,8 @@ import java.sql.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewMeasurementDTO {
-    private Integer electricMeterId;
-    private Date measureDateTime;
-    private Float measure;
+    private String serialNumber;
+    private float value;
+    private String date;
+    private String password;
 }

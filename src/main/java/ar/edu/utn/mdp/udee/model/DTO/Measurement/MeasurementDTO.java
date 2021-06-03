@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +16,5 @@ public class MeasurementDTO {
     private Bill bill;
     private ElectricMeterDTO electricMeter;
     private Float measure;
-    private Date measureDateTime;
+    private LocalDateTime measureDateTime;
 }
