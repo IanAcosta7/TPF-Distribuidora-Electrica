@@ -1,4 +1,4 @@
-package ar.edu.utn.mdp.udee.utils;
+package ar.edu.utn.mdp.udee.util;
 
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 

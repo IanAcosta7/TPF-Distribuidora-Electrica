@@ -1,6 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.DTO.ElectricMeterDTO;
+import ar.edu.utn.mdp.udee.model.dto.ElectricMeterDTO;
 import ar.edu.utn.mdp.udee.model.ElectricMeter;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.ElectricMeterRepository;

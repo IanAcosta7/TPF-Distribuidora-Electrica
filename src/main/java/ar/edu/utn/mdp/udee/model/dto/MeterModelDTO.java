@@ -1,4 +1,4 @@
-package ar.edu.utn.mdp.udee.model.DTO;
+package ar.edu.utn.mdp.udee.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserTypeDTO {
+public class MeterModelDTO {
     private Integer id;
-    private String typeName;
+    private MeterBrandDTO meterBrand;
+    private String modelName;
 }

@@ -1,7 +1,7 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.MeasurementDTO;
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.NewMeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.Measurement;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.MeasurementRepository;
@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;

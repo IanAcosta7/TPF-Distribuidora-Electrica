@@ -1,9 +1,9 @@
 package ar.edu.utn.mdp.udee.controller;
 
-import ar.edu.utn.mdp.udee.model.DTO.ElectricMeterDTO;
+import ar.edu.utn.mdp.udee.model.dto.ElectricMeterDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.ElectricMeterService;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
+import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ import java.net.URI;
 @RequestMapping(ElectricMeterController.PATH)
 public class ElectricMeterController {
 
-    public final static String PATH = "/ElectricMeter";
+    public final static String PATH = "/meters";
 
     private final ElectricMeterService electricMeterService;
 

@@ -1,15 +1,14 @@
 package ar.edu.utn.mdp.udee.converter;
 
 import ar.edu.utn.mdp.udee.model.*;
-import ar.edu.utn.mdp.udee.model.DTO.*;
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.MeasurementDTO;
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.NewMeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.*;
+import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -35,7 +34,7 @@ public class DTOGenericConverter implements GenericConverter {
                 new ConvertiblePair(TariffDTO.class, Tariff.class),
                 new ConvertiblePair(TariffType.class, TariffTypeDTO.class),
                 new ConvertiblePair(TariffTypeDTO.class, TariffType.class),
-                // Measurement
+                // measurement
                 new ConvertiblePair(NewMeasurementDTO.class, Measurement.class),
                 new ConvertiblePair(Measurement.class, MeasurementDTO.class),
                 //ElectricMeter

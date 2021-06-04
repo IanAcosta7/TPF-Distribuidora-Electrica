@@ -1,7 +1,7 @@
-package ar.edu.utn.mdp.udee.model.DTO.Measurement;
+package ar.edu.utn.mdp.udee.model.dto.measurement;
 
 import ar.edu.utn.mdp.udee.model.Bill;
-import ar.edu.utn.mdp.udee.model.DTO.ElectricMeterDTO;
+import ar.edu.utn.mdp.udee.model.dto.ElectricMeterDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package ar.edu.utn.mdp.udee.model.DTO;
+package ar.edu.utn.mdp.udee.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

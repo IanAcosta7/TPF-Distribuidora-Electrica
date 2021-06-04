@@ -1,11 +1,11 @@
 package ar.edu.utn.mdp.udee.controller;
 
-import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.UserTypeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
-import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
+import ar.edu.utn.mdp.udee.model.dto.UserDTO;
 import ar.edu.utn.mdp.udee.service.UserService;
 import ar.edu.utn.mdp.udee.service.UserTypeService;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
+import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ import java.net.URI;
 @RequestMapping(UserController.PATH)
 public class UserController {
 
-    final public static String PATH = "/User";
-    final public static String TYPE_PATH = "/Type";
+    final public static String PATH = "/users";
+    final public static String TYPE_PATH = "/types";
 
     private final UserService userService;
     private final UserTypeService userTypeService;
