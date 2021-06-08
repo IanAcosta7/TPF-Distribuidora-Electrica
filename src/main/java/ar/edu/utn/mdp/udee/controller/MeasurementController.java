@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping(MeasurementController.PATH)
@@ -40,9 +41,13 @@ public class MeasurementController {
     @GetMapping
     public ResponseEntity<PaginationResponse<MeasurementDTO>> getAll(
             @RequestParam(name = "page", defaultValue = "0") Integer page,
-            @RequestParam(name = "size", defaultValue = "50") Integer size
-    ) {
-        return ResponseEntity.ok(measurementService.getAll(page, size));
+            @RequestParam(name = "size", defaultValue = "50") Integer size,
+            @RequestParam(name = "sinceDate", defaultValue = "") String sinceDateTimeStr,
+            @RequestParam(name = "untilDate", defaultValue = "") String untilDateTimeStr
+            ) {
+        LocalDateTime sinceMeasureDateTime = sinceDateTimeStr.equals("") ? null : LocalDateTime.parse(sinceDateTimeStr);
+        LocalDateTime untilMeasureDateTime = untilDateTimeStr.equals("") ? null : LocalDateTime.parse(untilDateTimeStr);
+        return ResponseEntity.ok(measurementService.getAll(page, size, sinceMeasureDateTime, untilMeasureDateTime));
     }
 
     @GetMapping(UserController.PATH + "/{id}")

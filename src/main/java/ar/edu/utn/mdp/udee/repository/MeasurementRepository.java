@@ -1,10 +1,13 @@
 package ar.edu.utn.mdp.udee.repository;
 
 import ar.edu.utn.mdp.udee.model.Measurement;
+import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
+import java.time.LocalDateTime;
 
 public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
 
@@ -17,6 +20,12 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
             "WHERE A.client_id = ?1",
             nativeQuery = true
     )
-    public Page<Measurement> findByUserId(Integer id, Pageable pageable);
 
+    Page<Measurement> findByUserId(Integer id, Pageable pageable);
+
+    Page<Measurement> findByMeasureDateTimeAfter(LocalDateTime sinceMeasureDateTime, Pageable pageable);
+
+    Page<Measurement> findByMeasureDateTimeBefore(LocalDateTime untilDateTime, Pageable pageable);
+
+    Page<Measurement> findByMeasureDateTimeBetween(LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime, Pageable pageable);
 }
