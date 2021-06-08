@@ -51,6 +51,7 @@ CREATE TABLE IF NOT EXISTS electric_meters (
     id INT NOT NULL AUTO_INCREMENT,
     model_id INT,
     serial_number VARCHAR(50),
+    password VARCHAR(50),
     CONSTRAINT PK_electric_meters PRIMARY KEY (id),
     CONSTRAINT FK_electric_meters_meter_models FOREIGN KEY (model_id) REFERENCES meter_models(id)
 );

@@ -22,7 +22,7 @@ public class Bill {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "addressid", referencedColumnName = "id")
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
     @NotNull(message = "Field date is required.")
@@ -34,7 +34,7 @@ public class Bill {
     private Float amountPayed;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "clientid", referencedColumnName = "id")
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private User user;
 
 }
