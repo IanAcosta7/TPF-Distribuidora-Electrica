@@ -45,6 +45,15 @@ public class MeasurementController {
         return ResponseEntity.ok(measurementService.getAll(page, size));
     }
 
+    @GetMapping(UserController.PATH + "/{id}")
+    public ResponseEntity<PaginationResponse<MeasurementDTO>> getAllByUserId(
+            @PathVariable Integer id,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "50") Integer size
+    ) {
+        return ResponseEntity.ok(measurementService.getAllByUserId(id, page, size));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<MeasurementDTO> getById(@PathVariable Integer id) {
         return ResponseEntity.ok(measurementService.getById(id));

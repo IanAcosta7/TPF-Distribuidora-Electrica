@@ -21,7 +21,7 @@ public class Address {
     private String street;
 
     @NotBlank(message = "Field number cannot be empty.")
-    private Integer number;
+    private String addressNumber;
 
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "tariff_id", referencedColumnName = "id")
@@ -30,4 +30,8 @@ public class Address {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")
     private ElectricMeter electricMeter;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private User client;
 }
