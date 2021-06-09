@@ -1,7 +1,7 @@
 package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.User;
-import ar.edu.utn.mdp.udee.model.dto.UserDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,15 +23,9 @@ public class UserService {
         this.conversionService = conversionService;
     }
 
-    public Integer login(String username, String password) {
-        User user = userRepository.getUserByUsernameAndPassword(username, password);
-        Integer id = 0;
-
-        if (user != null) {
-            id = user.getId();
-        }
-
-        return id;
+    public UserDTO login(String username, String password) {
+        User user = userRepository.findByUsernameAndPassword(username, password);
+        return conversionService.convert(user, UserDTO.class);
     }
 
     public UserDTO add(UserDTO userDTO) {

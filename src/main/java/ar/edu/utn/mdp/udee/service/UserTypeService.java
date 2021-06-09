@@ -1,6 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.dto.UserTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
 import ar.edu.utn.mdp.udee.model.UserType;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.UserTypeRepository;

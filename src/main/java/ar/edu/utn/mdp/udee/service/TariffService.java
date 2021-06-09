@@ -1,6 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.dto.TariffDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffDTO;
 import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.TariffRepository;
