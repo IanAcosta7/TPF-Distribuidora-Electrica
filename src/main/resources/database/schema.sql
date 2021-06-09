@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS tariffs (
     tariff_type_id INT,
     tariff_value FLOAT,
     CONSTRAINT PK_tariffs PRIMARY KEY (id),
-    CONSTRAINT FK_tariffs_tariff_types FOREIGN KEY (tariff_type_id) REFERENCES tariff_types(id)
+    CONSTRAINT FK_tariffs_tariff_types FOREIGN KEY (tariff_type_id) REFERENCES tariff_types(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS user_types (
@@ -63,8 +63,8 @@ CREATE TABLE IF NOT EXISTS addresses (
     street VARCHAR(50),
     number VARCHAR(50),
     CONSTRAINT PK_addresses PRIMARY KEY (id),
-    CONSTRAINT FK_addresses_tariffs FOREIGN KEY (tariff_id) REFERENCES tariffs(id),
-    CONSTRAINT FK_addresses_electric_meters FOREIGN KEY (electric_meter_id) REFERENCES electric_meters(id),
+    CONSTRAINT FK_addresses_tariffs FOREIGN KEY (tariff_id) REFERENCES tariffs(id) ON DELETE CASCADE,
+    CONSTRAINT FK_addresses_electric_meters FOREIGN KEY (electric_meter_id) REFERENCES electric_meters(id) ON DELETE CASCADE,
     CONSTRAINT UNQ_electric_meter_id UNIQUE (electric_meter_id)
 );
 
@@ -92,5 +92,5 @@ CREATE TABLE IF NOT EXISTS measurements (
     measure FLOAT NOT NULL,
     measure_date_time DATETIME,
     CONSTRAINT PK_measurements PRIMARY KEY (id),
-    CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id)
+    CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );

@@ -9,6 +9,7 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,5 +39,10 @@ public class TariffService {
     public TariffDTO getTariffById(Integer id) {
         Tariff tariff = tariffRepository.findById(id).orElse(null);
         return conversionService.convert(tariff, TariffDTO.class);
+    }
+
+    public Integer delete(Integer id) {
+        tariffRepository.deleteById(id);
+        return id;
     }
 }

@@ -36,6 +36,11 @@ public class ElectricMeterController {
         ).body(electricMeterDTOAdded);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> delete(@PathVariable Integer id) {
+        return ResponseEntity.ok(electricMeterService.delete(id));
+    }
+
     @GetMapping
     public ResponseEntity<PaginationResponse<ElectricMeterDTO>> getAll(
             @RequestParam(name = "page", defaultValue = "0") Integer page,

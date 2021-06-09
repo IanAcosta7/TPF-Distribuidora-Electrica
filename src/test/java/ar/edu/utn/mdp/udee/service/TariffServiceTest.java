@@ -5,6 +5,7 @@ import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.TariffRepository;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -35,6 +36,18 @@ public class TariffServiceTest {
         tariffRepositoryMock = mock(TariffRepository.class);
         conversionServiceMock = mock(ConversionService.class);
         tariffService = new TariffService(tariffRepositoryMock, conversionServiceMock);
+    }
+
+    @Test
+    public void deleteTariffs_Test() {
+        // Arrange
+        Integer id = 1;
+
+        // Act
+        Integer result = tariffService.delete(id);
+
+        // Assert
+        Assertions.assertNotNull(result);
     }
 
     @Test

@@ -52,6 +52,11 @@ public class TariffController {
         ).body(tariffDTOAdded);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Integer> delete(@PathVariable Integer id) {
+        return ResponseEntity.ok(tariffService.delete(id));
+    }
+
     @GetMapping(TYPE_PATH)
     public ResponseEntity<PaginationResponse<TariffTypeDTO>> getTariffTypes(@RequestParam(value = "page", defaultValue = "0") Integer page,
                                                                             @RequestParam(value = "size", defaultValue = "50") Integer size) {

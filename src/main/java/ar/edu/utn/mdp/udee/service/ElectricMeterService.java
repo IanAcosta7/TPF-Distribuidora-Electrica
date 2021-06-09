@@ -48,4 +48,8 @@ public class ElectricMeterService {
         return conversionService.convert(electricMeterRepository.findById(id).orElse(null), ElectricMeterDTO.class);
     }
 
+    public Integer delete(Integer id) {
+        electricMeterRepository.deleteById(id);
+        return id;
+    }
 }

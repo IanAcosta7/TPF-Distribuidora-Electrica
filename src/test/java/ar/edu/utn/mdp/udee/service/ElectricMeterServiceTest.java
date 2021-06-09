@@ -5,6 +5,7 @@ import ar.edu.utn.mdp.udee.model.ElectricMeter;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.ElectricMeterRepository;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -49,6 +50,18 @@ public class ElectricMeterServiceTest {
 
         // Assert
         Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void deleteTariffs_Test() {
+        // Arrange
+        Integer id = 1;
+
+        // Act
+        Integer result = electricMeterService.delete(id);
+
+        // Assert
+        Assertions.assertNotNull(result);
     }
 
     @Test

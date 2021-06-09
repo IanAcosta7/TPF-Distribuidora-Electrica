@@ -85,6 +85,19 @@ public class TariffControllerTest {
     }
 
     @Test
+    public void deleteTariffTest() {
+        // Arrange
+        Integer id = 1;
+
+        // Act
+        ResponseEntity<Integer> result = tariffController.delete(id);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(HttpStatus.OK, result.getStatusCode());
+    }
+
+    @Test
     public void getTariffTypesTest() {
         // Arrange
         Integer pageNumber = 0, pageSize = 5;

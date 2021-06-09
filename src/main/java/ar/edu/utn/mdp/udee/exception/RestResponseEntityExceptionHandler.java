@@ -1,6 +1,7 @@
 package ar.edu.utn.mdp.udee.exception;
 
 import ar.edu.utn.mdp.udee.exception.error.UDEEError;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,15 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         }
 
         return new ResponseEntity<>(new UDEEError(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({EmptyResultDataAccessException.class})
+    public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
+        List<String> errors = new ArrayList<>();
+
+        errors.add(ex.getMessage());
+
+        return new ResponseEntity<>(new UDEEError(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
 }
