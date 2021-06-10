@@ -1,9 +1,13 @@
 package ar.edu.utn.mdp.udee.converter;
 
 import ar.edu.utn.mdp.udee.model.*;
-import ar.edu.utn.mdp.udee.model.dto.*;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.meter.ElectricMeterDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.core.convert.TypeDescriptor;
 import org.springframework.core.convert.converter.GenericConverter;
