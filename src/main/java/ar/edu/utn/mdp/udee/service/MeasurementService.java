@@ -1,7 +1,7 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.MeasurementDTO;
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.NewMeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.Measurement;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.MeasurementRepository;

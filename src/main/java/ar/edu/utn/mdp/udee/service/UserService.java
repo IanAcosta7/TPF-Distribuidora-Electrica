@@ -1,19 +1,14 @@
 package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.User;
-import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
-import ar.edu.utn.mdp.udee.controller.UserController;
+import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
-import ar.edu.utn.mdp.udee.model.UserType;
-import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,15 +23,9 @@ public class UserService {
         this.conversionService = conversionService;
     }
 
-    public Integer login(String username, String password) {
-        User user = userRepository.getUserByUsernameAndPassword(username, password);
-        Integer id = 0;
-
-        if (user != null) {
-            id = user.getId();
-        }
-
-        return id;
+    public UserDTO login(String username, String password) {
+        User user = userRepository.findByUsernameAndPassword(username, password);
+        return conversionService.convert(user, UserDTO.class);
     }
 
     public UserDTO add(UserDTO userDTO) {

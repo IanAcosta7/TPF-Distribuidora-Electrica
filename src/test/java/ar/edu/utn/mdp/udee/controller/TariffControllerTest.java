@@ -1,11 +1,11 @@
 package ar.edu.utn.mdp.udee.controller;
 
-import ar.edu.utn.mdp.udee.model.DTO.TariffDTO;
-import ar.edu.utn.mdp.udee.model.DTO.TariffTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffTypeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.TariffService;
 import ar.edu.utn.mdp.udee.service.TariffTypeService;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
+import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.DTO.ElectricMeterDTO;
+import ar.edu.utn.mdp.udee.model.dto.meter.ElectricMeterDTO;
 import ar.edu.utn.mdp.udee.model.ElectricMeter;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.ElectricMeterRepository;
@@ -20,7 +20,6 @@ public class ElectricMeterService {
     private final ConversionService conversionService;
 
     @Autowired
-
     public ElectricMeterService(ElectricMeterRepository electricMeterRepository, ConversionService conversionService) {
         this.electricMeterRepository = electricMeterRepository;
         this.conversionService = conversionService;

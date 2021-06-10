@@ -1,21 +1,15 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.controller.UserController;
-import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
 import ar.edu.utn.mdp.udee.model.UserType;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
-import ar.edu.utn.mdp.udee.model.response.PostResponse;
 import ar.edu.utn.mdp.udee.repository.UserTypeRepository;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserTypeService {

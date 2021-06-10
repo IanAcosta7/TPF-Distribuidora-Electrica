@@ -1,23 +1,23 @@
 package ar.edu.utn.mdp.udee.service;
 
-import ar.edu.utn.mdp.udee.model.DTO.UserDTO;
-import ar.edu.utn.mdp.udee.model.DTO.UserTypeDTO;
-import ar.edu.utn.mdp.udee.controller.UserController;
+import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserLoginDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.User;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,17 +40,30 @@ public class UserServiceTest {
     }
 
     @Test
-    public void loginTest() {
+    public void login_UserExistsTest() {
         // Arrange
         User user = getUser();
-        Mockito.when(userRepositoryMock.getUserByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+        Mockito.when(userRepositoryMock.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
 
         // Act
-        Integer result = userService.login(user.getUsername(), user.getPassword());
+        UserDTO result = userService.login(user.getUsername(), user.getPassword());
 
         // Assert
-        Assert.assertNotNull(result);
-        Assert.assertEquals(user.getId(), result);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(user.getId(), result.getId());
+    }
+
+    @Test
+    public void login_UserNotExistsTest() {
+        // Arrange
+        User user = getUser();
+        Mockito.when(userRepositoryMock.findByUsernameAndPassword(user.getUsername(), user.getPassword())).thenReturn(user);
+
+        // Act
+        UserDTO result = userService.login("Test", "Test");
+
+        // Assert
+        Assertions.assertNull(result);
     }
 
     @Test

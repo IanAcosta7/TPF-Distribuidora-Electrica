@@ -1,11 +1,11 @@
 package ar.edu.utn.mdp.udee.controller;
 
-import ar.edu.utn.mdp.udee.model.DTO.TariffDTO;
-import ar.edu.utn.mdp.udee.model.DTO.TariffTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffDTO;
+import ar.edu.utn.mdp.udee.model.dto.tariff.TariffTypeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.TariffService;
 import ar.edu.utn.mdp.udee.service.TariffTypeService;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
+import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +16,8 @@ import java.net.URI;
 @RequestMapping(TariffController.PATH)
 public class TariffController {
 
-    final public static String PATH = "/Tariff";
-    final public static String TYPE_PATH = "/Type";
+    final public static String PATH = "/tariffs";
+    final public static String TYPE_PATH = "/types";
 
     private final TariffService tariffService;
     private final TariffTypeService tariffTypeService;

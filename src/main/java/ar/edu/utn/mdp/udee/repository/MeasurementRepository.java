@@ -1,14 +1,15 @@
 package ar.edu.utn.mdp.udee.repository;
 
 import ar.edu.utn.mdp.udee.model.Measurement;
-import org.apache.tomcat.jni.Local;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
 
+@Repository
 public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
 
     @Query(value =

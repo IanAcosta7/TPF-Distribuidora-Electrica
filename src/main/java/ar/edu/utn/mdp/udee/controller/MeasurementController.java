@@ -1,12 +1,13 @@
 package ar.edu.utn.mdp.udee.controller;
 
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.MeasurementDTO;
-import ar.edu.utn.mdp.udee.model.DTO.Measurement.NewMeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.MeasurementService;
-import ar.edu.utn.mdp.udee.utils.EntityURLBuilder;
+import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -16,7 +17,7 @@ import java.time.LocalDateTime;
 @RequestMapping(MeasurementController.PATH)
 public class MeasurementController {
 
-    public final static String PATH = "/Measurement";
+    public final static String PATH = "/measurements";
 
     private final MeasurementService measurementService;
 
