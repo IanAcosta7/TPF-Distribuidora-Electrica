@@ -33,8 +33,4 @@ public class Bill {
     @Min(value = 0, message = "Field payed must be a positive number.")
     private Float amountPayed;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private User user;
-
 }

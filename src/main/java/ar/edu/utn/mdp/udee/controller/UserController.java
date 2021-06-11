@@ -115,7 +115,7 @@ public class UserController {
     }
 
     private String generateToken(UserDTO userDTO) {
-            List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_CLIENT");
+            List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(userDTO.getUsertype().getTypeName());
 
             return Jwts
                     .builder()
