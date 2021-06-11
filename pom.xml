@@ -102,6 +102,15 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.2</version>
+				<configuration>
+					<excludes>
+						<exclude>**/ar/edu/utn/mdp/udee/*</exclude>
+						<exclude>**/ar/edu/utn/mdp/udee/model/**</exclude>
+						<exclude>**/ar/edu/utn/mdp/udee/converter/**</exclude>
+						<exclude>**/ar/edu/utn/mdp/udee/util/**</exclude>
+						<exclude>**/ar/edu/utn/mdp/udee/config/**</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<goals>

@@ -94,3 +94,6 @@ CREATE TABLE IF NOT EXISTS measurements (
     CONSTRAINT PK_measurements PRIMARY KEY (id),
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );
+
+INSERT INTO user_types (type_name) values ('ROLE_EMPLOYEE');
+INSERT INTO users (user_type_id, username, password, first_name, last_name) values (1, 'Test', 'Test', 'Test', 'Test');
