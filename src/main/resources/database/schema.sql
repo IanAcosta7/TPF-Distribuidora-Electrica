@@ -60,18 +60,19 @@ CREATE TABLE IF NOT EXISTS addresses (
     id INT NOT NULL AUTO_INCREMENT,
     tariff_id INT,
     electric_meter_id INT,
+    client_id INT,
     street VARCHAR(50),
-    number VARCHAR(50),
+    address_number VARCHAR(50),
     CONSTRAINT PK_addresses PRIMARY KEY (id),
-    CONSTRAINT FK_addresses_tariffs FOREIGN KEY (tariff_id) REFERENCES tariffs(id) ON DELETE CASCADE,
-    CONSTRAINT FK_addresses_electric_meters FOREIGN KEY (electric_meter_id) REFERENCES electric_meters(id) ON DELETE CASCADE,
+    CONSTRAINT FK_addresses_tariffs FOREIGN KEY (tariff_id) REFERENCES tariffs(id),
+    CONSTRAINT FK_addresses_electric_meters FOREIGN KEY (electric_meter_id) REFERENCES electric_meters(id),
+    CONSTRAINT FK_addresses_users FOREIGN KEY (client_id) REFERENCES users(id),
     CONSTRAINT UNQ_electric_meter_id UNIQUE (electric_meter_id)
 );
 
 CREATE TABLE IF NOT EXISTS bills (
     id INT NOT NULL AUTO_INCREMENT,
     address_id INT,
-    client_id INT,
     bill_date DATE,
     amount_payed FLOAT,
     initial_measure FLOAT,
@@ -81,8 +82,7 @@ CREATE TABLE IF NOT EXISTS bills (
     consumption FLOAT,
     total FLOAT,
     CONSTRAINT PK_bills PRIMARY KEY (id),
-    CONSTRAINT FK_bills_address FOREIGN KEY (address_id) REFERENCES addresses(id),
-    CONSTRAINT FK_bills_users FOREIGN KEY (client_id) REFERENCES users(id)
+    CONSTRAINT FK_bills_address FOREIGN KEY (address_id) REFERENCES addresses(id)
 );
 
 CREATE TABLE IF NOT EXISTS measurements (

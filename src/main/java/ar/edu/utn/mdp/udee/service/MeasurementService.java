@@ -12,6 +12,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class MeasurementService {
 
@@ -29,14 +31,32 @@ public class MeasurementService {
         return conversionService.convert(measurement, MeasurementDTO.class);
     }
 
-    public PaginationResponse<MeasurementDTO> getAll(Integer pageNumber, Integer pageSize) {
+    public PaginationResponse<MeasurementDTO> getAll(Integer pageNumber, Integer pageSize, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Measurement> measurementPage = measurementRepository.findAll(pageable);
+        Page<Measurement> measurementPage;
+
+        // Filter by date
+        if (sinceMeasureDateTime == null && untilMeasureDateTime == null)
+            measurementPage = measurementRepository.findAll(pageable);
+        else if (untilMeasureDateTime == null)
+            measurementPage = measurementRepository.findByMeasureDateTimeAfter(sinceMeasureDateTime, pageable);
+        else if (sinceMeasureDateTime == null)
+            measurementPage = measurementRepository.findByMeasureDateTimeBefore(untilMeasureDateTime, pageable);
+        else
+            measurementPage = measurementRepository.findByMeasureDateTimeBetween(sinceMeasureDateTime, untilMeasureDateTime, pageable);
+
         Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
         return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
     }
 
     public MeasurementDTO getById(Integer id) {
         return conversionService.convert(measurementRepository.findById(id).orElse(null), MeasurementDTO.class);
+    }
+
+    public PaginationResponse<MeasurementDTO> getAllByUserId(Integer id, Integer page, Integer size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Measurement> measurementPage = measurementRepository.findByUserId(id, pageable);
+        Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
+        return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
     }
 }

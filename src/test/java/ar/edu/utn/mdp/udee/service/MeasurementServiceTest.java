@@ -62,7 +62,7 @@ public class MeasurementServiceTest {
         Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(getMeasurementDTO());
 
         // Act
-        PaginationResponse<MeasurementDTO> result = measurementService.getAll(pageNumber, pageSize);
+        PaginationResponse<MeasurementDTO> result = measurementService.getAll(pageNumber, pageSize, null, null);
 
         // Assert
         Assert.assertNotNull(result);
