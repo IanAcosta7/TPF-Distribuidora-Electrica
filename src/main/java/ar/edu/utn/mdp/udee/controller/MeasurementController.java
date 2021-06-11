@@ -8,6 +8,8 @@ import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -41,14 +43,27 @@ public class MeasurementController {
 
     @GetMapping
     public ResponseEntity<PaginationResponse<MeasurementDTO>> getAll(
+            Authentication auth,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "50") Integer size,
             @RequestParam(name = "sinceDate", defaultValue = "") String sinceDateTimeStr,
             @RequestParam(name = "untilDate", defaultValue = "") String untilDateTimeStr
-            ) {
+            ) throws MissingServletRequestParameterException {
         LocalDateTime sinceMeasureDateTime = sinceDateTimeStr.equals("") ? null : LocalDateTime.parse(sinceDateTimeStr);
         LocalDateTime untilMeasureDateTime = untilDateTimeStr.equals("") ? null : LocalDateTime.parse(untilDateTimeStr);
-        return ResponseEntity.ok(measurementService.getAll(page, size, sinceMeasureDateTime, untilMeasureDateTime));
+
+        Integer userId = (int)auth.getPrincipal();
+
+        String role = auth.getAuthorities().stream().findFirst().orElseThrow(() -> new MissingServletRequestParameterException("role", "string")).getAuthority();
+        PaginationResponse<MeasurementDTO> paginationResponse;
+
+        // If the role is not employee, only the user specific measures is returned.
+        if (role.equals("ROLE_EMPLOYEE"))
+            paginationResponse = measurementService.getAll(page, size, sinceMeasureDateTime, untilMeasureDateTime);
+        else
+            paginationResponse = measurementService.getAllFromUser(userId, page, size, sinceMeasureDateTime, untilMeasureDateTime);
+
+        return ResponseEntity.ok(paginationResponse);
     }
 
     @GetMapping(UserController.PATH + "/{id}")

@@ -1,3 +1,4 @@
+
 package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
@@ -30,13 +31,15 @@ public class MeasurementServiceTest {
     private MeasurementService measurementService;
     private MeasurementRepository measurementRepositoryMock;
     private ConversionService conversionServiceMock;
+    private AddressService addressServiceMock;
 
     @BeforeAll
     public void setUp() {
         measurementRepositoryMock = mock(MeasurementRepository.class);
         conversionServiceMock = mock(ConversionService.class);
+        addressServiceMock = mock(AddressService.class);
 
-        measurementService = new MeasurementService(measurementRepositoryMock, conversionServiceMock);
+        measurementService = new MeasurementService(measurementRepositoryMock, conversionServiceMock, addressServiceMock);
     }
 
     @Test

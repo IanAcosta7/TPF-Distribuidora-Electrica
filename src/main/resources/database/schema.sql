@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS user_types (
 
 CREATE TABLE IF NOT EXISTS users (
     id INT NOT NULL AUTO_INCREMENT,
-    user_type_id INT,
+    user_type_id INT NOT NULL,
     username VARCHAR(50),
     password VARCHAR(128),
     first_name VARCHAR(50),

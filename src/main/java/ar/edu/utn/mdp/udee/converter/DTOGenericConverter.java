@@ -1,6 +1,7 @@
 package ar.edu.utn.mdp.udee.converter;
 
 import ar.edu.utn.mdp.udee.model.*;
+import ar.edu.utn.mdp.udee.model.dto.address.AddressDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.meter.ElectricMeterDTO;
@@ -41,9 +42,12 @@ public class DTOGenericConverter implements GenericConverter {
                 // measurement
                 new ConvertiblePair(NewMeasurementDTO.class, Measurement.class),
                 new ConvertiblePair(Measurement.class, MeasurementDTO.class),
-                //ElectricMeter
+                // ElectricMeter
                 new ConvertiblePair(ElectricMeter.class, ElectricMeterDTO.class),
-                new ConvertiblePair(ElectricMeterDTO.class, ElectricMeter.class)
+                new ConvertiblePair(ElectricMeterDTO.class, ElectricMeter.class),
+                // Address
+                new ConvertiblePair(Address.class, AddressDTO.class),
+                new ConvertiblePair(AddressDTO.class, Address.class),
         };
         return Set.of(convertiblePairs);
     }

@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.repository;
 
+import ar.edu.utn.mdp.udee.model.ElectricMeter;
 import ar.edu.utn.mdp.udee.model.Measurement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +22,19 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
             "WHERE A.client_id = ?1",
             nativeQuery = true
     )
-
     Page<Measurement> findByUserId(Integer id, Pageable pageable);
+
+    Page<Measurement> findAllByElectricMeter(ElectricMeter electricMeter, Pageable pageable);
 
     Page<Measurement> findByMeasureDateTimeAfter(LocalDateTime sinceMeasureDateTime, Pageable pageable);
 
+    Page<Measurement> findByElectricMeterAndMeasureDateTimeAfter(ElectricMeter electricMeter, LocalDateTime sinceMeasureDateTime, Pageable pageable);
+
     Page<Measurement> findByMeasureDateTimeBefore(LocalDateTime untilDateTime, Pageable pageable);
 
+    Page<Measurement> findByElectricMeterAndMeasureDateTimeBefore(ElectricMeter electricMeter, LocalDateTime untilDateTime, Pageable pageable);
+
     Page<Measurement> findByMeasureDateTimeBetween(LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime, Pageable pageable);
+
+    Page<Measurement> findByElectricMeterAndMeasureDateTimeBetween(ElectricMeter electricMeter, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime, Pageable pageable);
 }

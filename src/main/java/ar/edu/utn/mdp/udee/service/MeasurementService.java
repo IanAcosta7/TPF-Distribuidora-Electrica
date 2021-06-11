@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.model.dto.address.AddressDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.Measurement;
@@ -19,11 +20,13 @@ public class MeasurementService {
 
     private final MeasurementRepository measurementRepository;
     private final ConversionService conversionService;
+    private final AddressService addressService;
 
     @Autowired
-    public MeasurementService(MeasurementRepository measurementRepository, ConversionService conversionService) {
+    public MeasurementService(MeasurementRepository measurementRepository, ConversionService conversionService, AddressService addressService) {
         this.measurementRepository = measurementRepository;
         this.conversionService = conversionService;
+        this.addressService = addressService;
     }
 
     public MeasurementDTO addMeasurement(NewMeasurementDTO newMeasurementDTO) {
@@ -44,6 +47,26 @@ public class MeasurementService {
             measurementPage = measurementRepository.findByMeasureDateTimeBefore(untilMeasureDateTime, pageable);
         else
             measurementPage = measurementRepository.findByMeasureDateTimeBetween(sinceMeasureDateTime, untilMeasureDateTime, pageable);
+
+        Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
+        return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
+    }
+
+    public PaginationResponse<MeasurementDTO> getAllFromUser(Integer userId, Integer pageNumber, Integer pageSize, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Measurement> measurementPage;
+
+        AddressDTO addressDTO = addressService.getAddressByUserId(userId);
+
+        // Filter by date
+        if (sinceMeasureDateTime == null && untilMeasureDateTime == null)
+            measurementPage = measurementRepository.findAllByElectricMeter(addressDTO.getElectricMeter(), pageable);
+        else if (untilMeasureDateTime == null)
+            measurementPage = measurementRepository.findByElectricMeterAndMeasureDateTimeAfter(addressDTO.getElectricMeter(), sinceMeasureDateTime, pageable);
+        else if (sinceMeasureDateTime == null)
+            measurementPage = measurementRepository.findByElectricMeterAndMeasureDateTimeBefore(addressDTO.getElectricMeter(), untilMeasureDateTime, pageable);
+        else
+            measurementPage = measurementRepository.findByElectricMeterAndMeasureDateTimeBetween(addressDTO.getElectricMeter(), sinceMeasureDateTime, untilMeasureDateTime, pageable);
 
         Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
         return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());

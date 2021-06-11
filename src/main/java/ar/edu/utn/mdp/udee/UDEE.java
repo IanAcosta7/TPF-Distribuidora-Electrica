@@ -30,6 +30,7 @@ public class UDEE {
 					.authorizeRequests()
 					.antMatchers(HttpMethod.POST, UserController.PATH + UserController.LOGIN_PATH).permitAll()
 					.antMatchers(HttpMethod.POST, MeasurementController.PATH).permitAll()
+					.antMatchers(HttpMethod.GET, MeasurementController.PATH).authenticated()
 					.anyRequest().hasRole("EMPLOYEE");
 		}
 	}
