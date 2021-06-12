@@ -1,5 +1,5 @@
-DROP DATABASE udee;
-CREATE DATABASE udee;
+--DROP DATABASE udee;
+--CREATE DATABASE udee;
 USE udee;
 
 CREATE TABLE IF NOT EXISTS tariff_types (
@@ -95,5 +95,23 @@ CREATE TABLE IF NOT EXISTS measurements (
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );
 
+---------------------- DATA -----------------------
 INSERT INTO user_types (type_name) values ('ROLE_EMPLOYEE');
 INSERT INTO users (user_type_id, username, password, first_name, last_name) values (1, 'Test', 'Test', 'Test', 'Test');
+
+---------------- STORED PROCEDURES ----------------
+DELIMITER ;;
+CREATE PROCEDURE sp_get_top_consumers (IN _after DATETIME, IN _before DATETIME)
+BEGIN
+SELECT * FROM (
+  SELECT u.id, SUM(m.measure) consumed FROM users u
+    INNER JOIN addresses a ON u.id = a.client_id
+    INNER JOIN electric_meters em ON a.electric_meter_id = em.id
+    INNER JOIN measurements m ON em.id = m.electric_meter_id
+  WHERE m.measure_date_time BETWEEN _after AND _before
+    GROUP BY id
+    LIMIT 10
+) user_consumptions
+ORDER BY consumed DESC;
+END;;
+DELIMITER ;

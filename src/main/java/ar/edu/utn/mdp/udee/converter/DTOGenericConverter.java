@@ -7,6 +7,7 @@ import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.meter.ElectricMeterDTO;
 import ar.edu.utn.mdp.udee.model.dto.tariff.TariffDTO;
 import ar.edu.utn.mdp.udee.model.dto.tariff.TariffTypeDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
 import org.modelmapper.ModelMapper;
@@ -34,6 +35,7 @@ public class DTOGenericConverter implements GenericConverter {
                 new ConvertiblePair(UserDTO.class, User.class),
                 new ConvertiblePair(UserType.class, UserTypeDTO.class),
                 new ConvertiblePair(UserTypeDTO.class, UserType.class),
+                new ConvertiblePair(User.class, UserConsumptionDTO.class),
                 // Tariff
                 new ConvertiblePair(Tariff.class, TariffDTO.class),
                 new ConvertiblePair(TariffDTO.class, Tariff.class),

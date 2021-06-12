@@ -1,7 +1,10 @@
 package ar.edu.utn.mdp.udee.controller;
 
+import ar.edu.utn.mdp.udee.model.dto.range.DateRangeDTO;
+import ar.edu.utn.mdp.udee.model.dto.user.UserConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserLoginDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
+import ar.edu.utn.mdp.udee.model.projection.UserConsumptionProjection;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
 import ar.edu.utn.mdp.udee.service.UserService;
@@ -17,6 +20,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -112,6 +116,16 @@ public class UserController {
     @GetMapping(TYPE_PATH + "/{id}")
     public ResponseEntity<UserTypeDTO> getUserTypeById(@PathVariable Integer id) {
         return ResponseEntity.ok(userTypeService.getById(id));
+    }
+
+    @GetMapping("/consumers")
+    public ResponseEntity<List<UserConsumptionProjection>> getTopConsumers(
+            @RequestBody DateRangeDTO dateRangeDTO
+    ) {
+        LocalDateTime sinceMeasureDateTime = dateRangeDTO.getSince().equals("") ? null : LocalDateTime.parse(dateRangeDTO.getSince());
+        LocalDateTime untilMeasureDateTime = dateRangeDTO.getUntil().equals("") ? null : LocalDateTime.parse(dateRangeDTO.getUntil());
+
+        return ResponseEntity.ok(userService.getTopConsumers(sinceMeasureDateTime, untilMeasureDateTime));
     }
 
     private String generateToken(UserDTO userDTO) {

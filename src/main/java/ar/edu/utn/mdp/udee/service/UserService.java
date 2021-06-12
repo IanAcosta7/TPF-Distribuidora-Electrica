@@ -1,7 +1,9 @@
 package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.User;
+import ar.edu.utn.mdp.udee.model.dto.user.UserConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserDTO;
+import ar.edu.utn.mdp.udee.model.projection.UserConsumptionProjection;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -47,5 +53,10 @@ public class UserService {
     public Integer addTypeToUser(Integer id, Integer typeId) {
         userRepository.setUserType(id, typeId);
         return id;
+    }
+
+    public List<UserConsumptionProjection> getTopConsumers(LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
+        return userRepository.getTopConsumers(sinceMeasureDateTime, untilMeasureDateTime);
+
     }
 }
