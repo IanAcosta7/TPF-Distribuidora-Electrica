@@ -94,6 +94,7 @@ CREATE TABLE IF NOT EXISTS measurements (
     CONSTRAINT PK_measurements PRIMARY KEY (id),
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );
+CREATE INDEX IDX_measurements_electric_meters ON measurements (electric_meter_id) USING BTREE;
 
 ---------------------- DATA -----------------------
 INSERT INTO user_types (type_name) values ('ROLE_EMPLOYEE');
