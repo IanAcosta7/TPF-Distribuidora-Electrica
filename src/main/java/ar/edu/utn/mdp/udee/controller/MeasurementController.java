@@ -2,10 +2,12 @@ package ar.edu.utn.mdp.udee.controller;
 
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
+import ar.edu.utn.mdp.udee.model.dto.range.DateRangeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.MeasurementService;
 import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -46,22 +48,24 @@ public class MeasurementController {
             Authentication auth,
             @RequestParam(name = "page", defaultValue = "0") Integer page,
             @RequestParam(name = "size", defaultValue = "50") Integer size,
-            @RequestParam(name = "sinceDate", defaultValue = "") String sinceDateTimeStr,
-            @RequestParam(name = "untilDate", defaultValue = "") String untilDateTimeStr
+            @RequestBody DateRangeDTO dateRangeDTO
             ) throws MissingServletRequestParameterException {
-        LocalDateTime sinceMeasureDateTime = sinceDateTimeStr.equals("") ? null : LocalDateTime.parse(sinceDateTimeStr);
-        LocalDateTime untilMeasureDateTime = untilDateTimeStr.equals("") ? null : LocalDateTime.parse(untilDateTimeStr);
-
-        Integer userId = (int)auth.getPrincipal();
-
-        String role = auth.getAuthorities().stream().findFirst().orElseThrow(() -> new MissingServletRequestParameterException("role", "string")).getAuthority();
         PaginationResponse<MeasurementDTO> paginationResponse;
+        String role = auth.getAuthorities().stream().findFirst().orElseThrow(() -> new MissingServletRequestParameterException("role", "string")).getAuthority();
 
-        // If the role is not employee, only the user specific measures is returned.
         if (role.equals("ROLE_EMPLOYEE"))
-            paginationResponse = measurementService.getAll(page, size, sinceMeasureDateTime, untilMeasureDateTime);
-        else
-            paginationResponse = measurementService.getAllFromUser(userId, page, size, sinceMeasureDateTime, untilMeasureDateTime);
+            paginationResponse = measurementService.getAll(
+                    PageRequest.of(page, size),
+                    LocalDateTime.parse(dateRangeDTO.getSince()),
+                    LocalDateTime.parse(dateRangeDTO.getUntil())
+            );
+        else // If the role is not employee, only the user specific measures are returned.
+            paginationResponse = measurementService.getAll(
+                    PageRequest.of(page, size),
+                    LocalDateTime.parse(dateRangeDTO.getSince()),
+                    LocalDateTime.parse(dateRangeDTO.getUntil()),
+                    (int)auth.getPrincipal()
+            );
 
         return ResponseEntity.ok(paginationResponse);
     }

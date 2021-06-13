@@ -23,9 +23,9 @@ public class Address {
     @NotBlank(message = "Field number cannot be empty.")
     private String addressNumber;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tariff_id", referencedColumnName = "id")
-    private List<Tariff> tariffs;
+    private Tariff tariffs;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")

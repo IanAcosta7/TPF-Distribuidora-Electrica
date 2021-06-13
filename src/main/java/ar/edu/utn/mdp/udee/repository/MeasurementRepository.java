@@ -13,28 +13,53 @@ import java.time.LocalDateTime;
 @Repository
 public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
 
-    @Query(value =
-            "SELECT M.* FROM measurements M INNER JOIN electric_meters EM ON M.electric_meter_id = EM.id INNER JOIN addresses A ON EM.id = A.electric_meter_id WHERE A.client_id = ?1 ORDER BY ?#{#pageable}",
+    @Query(
+            value =
+                "SELECT M.* FROM measurements M " +
+                "INNER JOIN electric_meters EM ON M.electric_meter_id = EM.id " +
+                "INNER JOIN addresses A ON EM.id = A.electric_meter_id " +
+                "WHERE A.client_id = ?1 " +
+                "ORDER BY ?#{#pageable}",
             countQuery =
-            "SELECT COUNT(M.*) FROM measurements M" +
-            "INNER JOIN electric_meters EM ON M.electric_meter_id = EM.id" +
-            "INNER JOIN addresses A ON EM.id = A.electric_meter_id" +
-            "WHERE A.client_id = ?1",
+                "SELECT COUNT(M.*) FROM measurements M" +
+                "INNER JOIN electric_meters EM ON M.electric_meter_id = EM.id" +
+                "INNER JOIN addresses A ON EM.id = A.electric_meter_id" +
+                "WHERE A.client_id = ?1",
             nativeQuery = true
     )
     Page<Measurement> findByUserId(Integer id, Pageable pageable);
 
-    Page<Measurement> findAllByElectricMeter(ElectricMeter electricMeter, Pageable pageable);
+//    @Query(
+//            value =
+//                "SELECT M.* FROM measurements M " +
+//                "WHERE bill_id IS NOT NULL " +
+//                "AND measure_date_time BETWEEN ?1 AND ?2 " +
+//                "ORDER BY ?#{#pageable} ",
+//            countQuery =
+//                "SELECT COUNT(M.id) FROM measurements M " +
+//                "WHERE bill_id IS NOT NULL " +
+//                "AND measure_date_time BETWEEN ?1 AND ?2 ",
+//            nativeQuery = true
+//    )
+//    Page<Measurement> findRange(LocalDateTime since, LocalDateTime until, Pageable pageable);
 
-    Page<Measurement> findByMeasureDateTimeAfter(LocalDateTime sinceMeasureDateTime, Pageable pageable);
+    @Query(
+            value =
+                "SELECT M FROM Measurement M " +
+                "WHERE M.bill IS NOT NULL " +
+                "AND M.measureDateTime BETWEEN ?1 AND ?2 "
+    )
+    Page<Measurement> findRange(LocalDateTime since, LocalDateTime until, Pageable pageable);
 
-    Page<Measurement> findByElectricMeterAndMeasureDateTimeAfter(ElectricMeter electricMeter, LocalDateTime sinceMeasureDateTime, Pageable pageable);
+    @Query(
+            value =
+                "SELECT M FROM Measurement M " +
+                "INNER JOIN ElectricMeter EM ON M.electricMeter.id = EM.id " +
+                "INNER JOIN Address A ON EM.id = A.electricMeter.id " +
+                "WHERE M.bill IS NOT NULL " +
+                "AND M.measureDateTime BETWEEN ?1 AND ?2 " +
+                "AND A.client.id = ?3 "
+    )
+    Page<Measurement> findRangeFromUser(LocalDateTime since, LocalDateTime until, Integer userId, Pageable pageable);
 
-    Page<Measurement> findByMeasureDateTimeBefore(LocalDateTime untilDateTime, Pageable pageable);
-
-    Page<Measurement> findByElectricMeterAndMeasureDateTimeBefore(ElectricMeter electricMeter, LocalDateTime untilDateTime, Pageable pageable);
-
-    Page<Measurement> findByMeasureDateTimeBetween(LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime, Pageable pageable);
-
-    Page<Measurement> findByElectricMeterAndMeasureDateTimeBetween(ElectricMeter electricMeter, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime, Pageable pageable);
 }

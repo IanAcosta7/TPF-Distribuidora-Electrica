@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class MeasurementDTO {
     private Integer id;
-    private Bill bill;
-    private ElectricMeterDTO electricMeter;
+    private Integer billId;
+    private Integer electricMeterId;
     private Float measure;
     private LocalDateTime measureDateTime;
 }

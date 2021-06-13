@@ -62,9 +62,19 @@ public class DTOGenericConverter implements GenericConverter {
         if (sourceType.equals(TypeDescriptor.valueOf(NewMeasurementDTO.class)) && targetType.equals(TypeDescriptor.valueOf(Measurement.class))) {
             NewMeasurementDTO input = (NewMeasurementDTO)o;
 
-            Measurement output = new Measurement();
+            Measurement output = (Measurement)result;
             output.setMeasure(input.getValue());
             output.setMeasureDateTime(LocalDateTime.parse(input.getDate()));
+
+            result = output;
+        }
+
+        if (sourceType.equals(TypeDescriptor.valueOf(Measurement.class)) && targetType.equals(TypeDescriptor.valueOf(MeasurementDTO.class))) {
+            Measurement input = (Measurement)o;
+
+            MeasurementDTO output = (MeasurementDTO)result;
+            output.setBillId(input.getBill() == null ? null : input.getBill().getId());
+            output.setElectricMeterId(input.getElectricMeter() == null ? null : input.getElectricMeter().getId());
 
             result = output;
         }

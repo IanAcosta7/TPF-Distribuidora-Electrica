@@ -7,6 +7,7 @@ import ar.edu.utn.mdp.udee.model.Measurement;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.repository.MeasurementRepository;
 import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -61,14 +62,37 @@ public class MeasurementServiceTest {
         // Arrange
         Integer pageNumber = 0;
         Integer pageSize = 50;
-        Mockito.when(measurementRepositoryMock.findAll(getPageable(pageNumber, pageSize))).thenReturn((getMeasurementPage(getPageable(pageNumber, pageSize))));
-        Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(getMeasurementDTO());
+        Pageable pageable = getPageable(pageNumber, pageSize);
+        LocalDateTime time = LocalDateTime.now();
+        MeasurementDTO measurementDTO = getMeasurementDTO();
+        Mockito.when(measurementRepositoryMock.findRange(time, time, pageable)).thenReturn(getMeasurementPage(pageable));
+        Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(measurementDTO);
 
         // Act
-        PaginationResponse<MeasurementDTO> result = measurementService.getAll(pageNumber, pageSize, null, null);
+        PaginationResponse<MeasurementDTO> result = measurementService.getAll(pageable, time, time);
 
         // Assert
-        Assert.assertNotNull(result);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(measurementDTO, result.getContent().get(0));
+    }
+
+    @Test
+    public void getAllTest_FromUser() {
+        // Arrange
+        Integer pageNumber = 0;
+        Integer pageSize = 50;
+        Pageable pageable = getPageable(pageNumber, pageSize);
+        LocalDateTime time = LocalDateTime.now();
+        MeasurementDTO measurementDTO = getMeasurementDTO();
+        Mockito.when(measurementRepositoryMock.findRangeFromUser(time, time, 1, pageable)).thenReturn(getMeasurementPage(pageable));
+        Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(measurementDTO);
+
+        // Act
+        PaginationResponse<MeasurementDTO> result = measurementService.getAll(pageable, time, time, 1);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(measurementDTO, result.getContent().get(0));
     }
 
     @Test

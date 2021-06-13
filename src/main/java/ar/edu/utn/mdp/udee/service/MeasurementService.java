@@ -34,40 +34,29 @@ public class MeasurementService {
         return conversionService.convert(measurement, MeasurementDTO.class);
     }
 
-    public PaginationResponse<MeasurementDTO> getAll(Integer pageNumber, Integer pageSize, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Measurement> measurementPage;
-
-        // Filter by date
-        if (sinceMeasureDateTime == null && untilMeasureDateTime == null)
-            measurementPage = measurementRepository.findAll(pageable);
-        else if (untilMeasureDateTime == null)
-            measurementPage = measurementRepository.findByMeasureDateTimeAfter(sinceMeasureDateTime, pageable);
-        else if (sinceMeasureDateTime == null)
-            measurementPage = measurementRepository.findByMeasureDateTimeBefore(untilMeasureDateTime, pageable);
-        else
-            measurementPage = measurementRepository.findByMeasureDateTimeBetween(sinceMeasureDateTime, untilMeasureDateTime, pageable);
-
+    /**
+     * Retrieves all measurements in a date range.
+     * @param pageable Pageable of the request.
+     * @param sinceMeasureDateTime Min date.
+     * @param untilMeasureDateTime Max date.
+     * @return All measurements in a specified date range.
+     */
+    public PaginationResponse<MeasurementDTO> getAll(Pageable pageable, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
+        Page<Measurement> measurementPage = measurementRepository.findRange(sinceMeasureDateTime, untilMeasureDateTime, pageable);
         Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
         return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
     }
 
-    public PaginationResponse<MeasurementDTO> getAllFromUser(Integer userId, Integer pageNumber, Integer pageSize, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
-        Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Measurement> measurementPage;
-
-        AddressDTO addressDTO = addressService.getAddressByUserId(userId);
-
-        // Filter by date
-        if (sinceMeasureDateTime == null && untilMeasureDateTime == null)
-            measurementPage = measurementRepository.findAllByElectricMeter(addressDTO.getElectricMeter(), pageable);
-        else if (untilMeasureDateTime == null)
-            measurementPage = measurementRepository.findByElectricMeterAndMeasureDateTimeAfter(addressDTO.getElectricMeter(), sinceMeasureDateTime, pageable);
-        else if (sinceMeasureDateTime == null)
-            measurementPage = measurementRepository.findByElectricMeterAndMeasureDateTimeBefore(addressDTO.getElectricMeter(), untilMeasureDateTime, pageable);
-        else
-            measurementPage = measurementRepository.findByElectricMeterAndMeasureDateTimeBetween(addressDTO.getElectricMeter(), sinceMeasureDateTime, untilMeasureDateTime, pageable);
-
+    /**
+     * Retrieves all measurements in a date range for a specific user.
+     * @param pageable Pageable of the request.
+     * @param sinceMeasureDateTime Min date.
+     * @param untilMeasureDateTime Max date.
+     * @param userId ID of the measurements owner.
+     * @return All measurements in a specified date range for a specific user.
+     */
+    public PaginationResponse<MeasurementDTO> getAll(Pageable pageable, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime, Integer userId) {
+        Page<Measurement> measurementPage = measurementRepository.findRangeFromUser(sinceMeasureDateTime, untilMeasureDateTime, userId, pageable);
         Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
         return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
     }
