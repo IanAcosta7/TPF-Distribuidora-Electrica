@@ -6,7 +6,4 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface AddressRepository extends JpaRepository<Address, Integer> {
-
-    public Address findByClient(Integer clientId);
-
 }

@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.model.Address;
 import ar.edu.utn.mdp.udee.model.dto.address.AddressDTO;
 import ar.edu.utn.mdp.udee.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,13 @@ public class AddressService {
         this.conversionService = conversionService;
     }
 
-    public AddressDTO getAddressByUserId(Integer userId) {
-        return conversionService.convert(addressRepository.findByClient(userId), AddressDTO.class);
+    public AddressDTO add(AddressDTO addressDTO) {
+        Address address = conversionService.convert(addressDTO, Address.class);
+        return conversionService.convert(addressRepository.save(address), AddressDTO.class);
     }
 
+    public Integer delete(Integer id) {
+        addressRepository.deleteById(id);
+        return id;
+    }
 }
