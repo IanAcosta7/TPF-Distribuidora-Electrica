@@ -29,20 +29,6 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
     )
     Page<Measurement> findByUserId(Integer id, Pageable pageable);
 
-//    @Query(
-//            value =
-//                "SELECT M.* FROM measurements M " +
-//                "WHERE bill_id IS NOT NULL " +
-//                "AND measure_date_time BETWEEN ?1 AND ?2 " +
-//                "ORDER BY ?#{#pageable} ",
-//            countQuery =
-//                "SELECT COUNT(M.id) FROM measurements M " +
-//                "WHERE bill_id IS NOT NULL " +
-//                "AND measure_date_time BETWEEN ?1 AND ?2 ",
-//            nativeQuery = true
-//    )
-//    Page<Measurement> findRange(LocalDateTime since, LocalDateTime until, Pageable pageable);
-
     @Query(
             value =
                 "SELECT M FROM Measurement M " +

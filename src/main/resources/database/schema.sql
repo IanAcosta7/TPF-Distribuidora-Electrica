@@ -73,16 +73,16 @@ CREATE TABLE IF NOT EXISTS addresses (
 CREATE TABLE IF NOT EXISTS bills (
     id INT NOT NULL AUTO_INCREMENT,
     address_id INT,
+    initial_measure_id INT,
+    final_measure_id INT,
     bill_date DATE,
     amount_payed FLOAT,
-    initial_measure FLOAT,
-    initial_measure_date_time DATETIME,
-    final_measure FLOAT,
-    final_measure_date_time DATETIME,
     consumption FLOAT,
     total FLOAT,
     CONSTRAINT PK_bills PRIMARY KEY (id),
-    CONSTRAINT FK_bills_address FOREIGN KEY (address_id) REFERENCES addresses(id)
+    CONSTRAINT FK_bills_address FOREIGN KEY (address_id) REFERENCES addresses(id),
+    CONSTRAINT FK_bills_initial_measurement FOREIGN KEY (initial_measure_id) REFERENCES measurements(id),
+    CONSTRAINT FK_bills_final_measurement FOREIGN KEY (final_measure_id) REFERENCES measurements(id)
 );
 
 CREATE TABLE IF NOT EXISTS measurements (
@@ -95,10 +95,6 @@ CREATE TABLE IF NOT EXISTS measurements (
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );
 CREATE INDEX IDX_measurements_electric_meters ON measurements (electric_meter_id) USING BTREE;
-
----------------------- DATA -----------------------
-INSERT INTO user_types (type_name) values ('ROLE_EMPLOYEE');
-INSERT INTO users (user_type_id, username, password, first_name, last_name) values (1, 'Test', 'Test', 'Test', 'Test');
 
 ---------------- STORED PROCEDURES ----------------
 DELIMITER ;;
