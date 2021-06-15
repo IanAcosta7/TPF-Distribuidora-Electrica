@@ -19,4 +19,21 @@ public interface BillRepository extends JpaRepository<Bill, Integer> {
     )
     Page<Bill> findByRange(Date since, Date until, Pageable pageable);
 
+    @Query(
+            value =
+                "SELECT B FROM Bill B " +
+                "WHERE B.amountPayed < B.total " +
+                "AND B.address.id = ?1"
+    )
+    Page<Bill> findUnpaidByAddress(Integer addressId, Pageable pageable);
+
+    @Query(
+            value =
+                "SELECT B FROM Bill B " +
+                "INNER JOIN Address A ON A.id = B.address.id " +
+                "WHERE B.amountPayed < B.total " +
+                "AND A.client.id = ?1"
+    )
+    Page<Bill> findUnpaidByClient(Integer clientId, Pageable pageable);
+
 }

@@ -39,4 +39,22 @@ public class BillController {
         );
     }
 
+    @GetMapping("/unpaid/address/{addressId}")
+    public ResponseEntity<PaginationResponse<BillDTO>> getUnpaidByAddress(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "50") Integer size,
+            @PathVariable Integer addressId
+    ) {
+        return ResponseEntity.ok(billService.getUnpaidByAddress(PageRequest.of(page, size), addressId));
+    }
+
+    @GetMapping("/unpaid/client/{clientId}")
+    public ResponseEntity<PaginationResponse<BillDTO>> getUnpaidByClient(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "50") Integer size,
+            @PathVariable Integer clientId
+    ) {
+        return ResponseEntity.ok(billService.getUnpaidByClient(PageRequest.of(page, size), clientId));
+    }
+
 }

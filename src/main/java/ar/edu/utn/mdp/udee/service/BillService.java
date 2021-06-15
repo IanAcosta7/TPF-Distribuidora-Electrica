@@ -29,4 +29,16 @@ public class BillService {
         Page<BillDTO> billDTOPage = billPage.map(bill -> conversionService.convert(bill, BillDTO.class));
         return new PaginationResponse<>(billDTOPage.getContent(), billDTOPage.getTotalPages(), billDTOPage.getTotalElements());
     }
+
+    public PaginationResponse<BillDTO> getUnpaidByAddress(Pageable pageable, Integer addressId) {
+        Page<Bill> billPage = billRepository.findUnpaidByAddress(addressId, pageable);
+        Page<BillDTO> billDTOPage = billPage.map(bill -> conversionService.convert(bill, BillDTO.class));
+        return new PaginationResponse<>(billDTOPage.getContent(), billDTOPage.getTotalPages(), billDTOPage.getTotalElements());
+    }
+
+    public PaginationResponse<BillDTO> getUnpaidByClient(Pageable pageable, Integer clientId) {
+        Page<Bill> billPage = billRepository.findUnpaidByClient(clientId, pageable);
+        Page<BillDTO> billDTOPage = billPage.map(bill -> conversionService.convert(bill, BillDTO.class));
+        return new PaginationResponse<>(billDTOPage.getContent(), billDTOPage.getTotalPages(), billDTOPage.getTotalElements());
+    }
 }

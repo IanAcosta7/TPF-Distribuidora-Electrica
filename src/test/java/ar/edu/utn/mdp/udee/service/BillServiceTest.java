@@ -55,6 +55,44 @@ public class BillServiceTest {
         Assertions.assertEquals(getBillDTO(), result.getContent().get(0));
     }
 
+    @Test
+    public void getUnpaidByAddress() {
+        // Arrange
+        int addressId = 1, pageNumber = 0, pageSize = 10;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Bill> billPage = getBillPage();
+        Bill bill = getBill();
+        BillDTO billDTO = getBillDTO();
+        Mockito.when(billRepositoryMock.findUnpaidByAddress(addressId, pageable)).thenReturn(billPage);
+        Mockito.when(conversionServiceMock.convert(bill, BillDTO.class)).thenReturn(billDTO);
+
+        // Act
+        PaginationResponse<BillDTO> result = billService.getUnpaidByAddress(pageable, addressId);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(billDTO, result.getContent().get(0));
+    }
+
+    @Test
+    public void getUnpaidByClient() {
+        // Arrange
+        int clientId = 1, pageNumber = 0, pageSize = 10;
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        Page<Bill> billPage = getBillPage();
+        Bill bill = getBill();
+        BillDTO billDTO = getBillDTO();
+        Mockito.when(billRepositoryMock.findUnpaidByClient(clientId, pageable)).thenReturn(billPage);
+        Mockito.when(conversionServiceMock.convert(bill, BillDTO.class)).thenReturn(billDTO);
+
+        // Act
+        PaginationResponse<BillDTO> result = billService.getUnpaidByClient(pageable, clientId);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(billDTO, result.getContent().get(0));
+    }
+
     private Page<Bill> getBillPage() {
         List<Bill> bills = new ArrayList<>();
 
