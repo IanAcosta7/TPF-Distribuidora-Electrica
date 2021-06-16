@@ -1,6 +1,8 @@
 
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.model.ElectricMeter;
+import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.Measurement;
@@ -32,29 +34,44 @@ public class MeasurementServiceTest {
     private MeasurementService measurementService;
     private MeasurementRepository measurementRepositoryMock;
     private ConversionService conversionServiceMock;
-    private AddressService addressServiceMock;
+    private ElectricMeterService electricMeterServiceMock;
+    private TariffService tariffServiceMock;
 
     @BeforeAll
     public void setUp() {
         measurementRepositoryMock = mock(MeasurementRepository.class);
         conversionServiceMock = mock(ConversionService.class);
-        addressServiceMock = mock(AddressService.class);
+        electricMeterServiceMock = mock(ElectricMeterService.class);
+        tariffServiceMock = mock(TariffService.class);
 
-        measurementService = new MeasurementService(measurementRepositoryMock, conversionServiceMock, addressServiceMock);
+        measurementService = new MeasurementService(measurementRepositoryMock, conversionServiceMock, electricMeterServiceMock, tariffServiceMock);
     }
 
     @Test
     public void addMeasurementTest() {
         // Arrange
-        Mockito.when(conversionServiceMock.convert(Mockito.any(NewMeasurementDTO.class), eq(Measurement.class))).thenReturn(getMeasurement());
+        NewMeasurementDTO newMeasurementDTO = getNewMeasurementDTO();
+        ElectricMeter electricMeter = getElectricMeter();
+        Tariff tariff = getTariff();
+        Measurement measurement = getMeasurement();
+        MeasurementDTO measurementDTO = getMeasurementDTO();
+        Mockito.when(electricMeterServiceMock.loginMeter(newMeasurementDTO.getSerialNumber(), newMeasurementDTO.getPassword())).thenReturn(Optional.of(electricMeter));
+        Mockito.when(tariffServiceMock.getTariffFromMeter(electricMeter.getId())).thenReturn(tariff);
+        Mockito.when(measurementRepositoryMock.getTopByElectricMeter(electricMeter.getId())).thenReturn(measurement);
         Mockito.when(measurementRepositoryMock.save(Mockito.any(Measurement.class))).thenReturn(getMeasurement());
-        Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(getMeasurementDTO());
+        Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(measurementDTO);
 
         // Act
-        MeasurementDTO result = measurementService.addMeasurement(getNewMeasurementDTO());
+        MeasurementDTO result = null;
+        try {
+            result = measurementService.addMeasurement(newMeasurementDTO);
+        } catch (Exception e) {
+            Assertions.fail();
+        }
 
         // Assert
-        Assert.assertNotNull(result);
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals((newMeasurementDTO.getValue() - measurement.getMeasure()) * tariff.getTariffValue(), result.getPrice());
     }
 
     @Test
@@ -110,15 +127,15 @@ public class MeasurementServiceTest {
     }
 
     private NewMeasurementDTO getNewMeasurementDTO() {
-        return new NewMeasurementDTO("Test", 0.5f, LocalDateTime.now().toString(), "Test");
+        return new NewMeasurementDTO("Test", 10f, LocalDateTime.now().toString(), "Test");
     }
 
     private MeasurementDTO getMeasurementDTO() {
-        return new MeasurementDTO(1, null, null, 0.5f, LocalDateTime.now());
+        return new MeasurementDTO(1, null, null, 0.5f, LocalDateTime.now(), 47.5f);
     }
 
     private Measurement getMeasurement() {
-        return new Measurement(1, null, null, 0.5f, LocalDateTime.now());
+        return new Measurement(1, null, null, 0.5f, LocalDateTime.now(), 5f);
     }
 
     private Page<Measurement> getMeasurementPage(Pageable pageable) {
@@ -135,6 +152,23 @@ public class MeasurementServiceTest {
 
     private Pageable getPageable(Integer pageNumber, Integer pageSize) {
         return PageRequest.of(pageNumber, pageSize);
+    }
+
+    private ElectricMeter getElectricMeter() {
+        return new ElectricMeter(
+                1,
+                "Test",
+                null,
+                "Test"
+        );
+    }
+
+    private Tariff getTariff() {
+        return new Tariff(
+                1,
+                null,
+                5f
+        );
     }
 
 }

@@ -48,4 +48,14 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
     )
     Page<Measurement> findRangeFromUser(LocalDateTime since, LocalDateTime until, Integer userId, Pageable pageable);
 
+    @Query(
+            value =
+                "SELECT M.* FROM measurements M " +
+                "WHERE M.electric_meter_id = ?1 " +
+                "ORDER BY M.measure_date_time " +
+                "LIMIT 1",
+            nativeQuery = true
+    )
+    Measurement getTopByElectricMeter(Integer electricMeterId);
+
 }

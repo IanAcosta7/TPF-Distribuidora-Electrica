@@ -27,7 +27,7 @@ public class Address {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "tariff_id", referencedColumnName = "id")
-    private Tariff tariffs;
+    private Tariff tariff;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "electric_meter_id", referencedColumnName = "id")

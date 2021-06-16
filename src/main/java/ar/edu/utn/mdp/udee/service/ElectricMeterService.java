@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,6 +24,10 @@ public class ElectricMeterService {
     public ElectricMeterService(ElectricMeterRepository electricMeterRepository, ConversionService conversionService) {
         this.electricMeterRepository = electricMeterRepository;
         this.conversionService = conversionService;
+    }
+
+    public Optional<ElectricMeter> loginMeter(String serialNumber, String password) {
+        return Optional.of(electricMeterRepository.findBySerialNumberAndPassword(serialNumber, password));
     }
 
     public ElectricMeterDTO addElectricMeter(ElectricMeterDTO electricMeterDTO) {

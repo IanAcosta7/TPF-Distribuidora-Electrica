@@ -36,4 +36,6 @@ public class Measurement {
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private LocalDateTime measureDateTime;
+
+    private Float price;
 }

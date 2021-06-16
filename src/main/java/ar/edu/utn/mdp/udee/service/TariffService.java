@@ -45,4 +45,8 @@ public class TariffService {
         tariffRepository.deleteById(id);
         return id;
     }
+
+    public Tariff getTariffFromMeter(Integer electricMeterId) {
+        return tariffRepository.findTariffByElectricMeter(electricMeterId);
+    }
 }

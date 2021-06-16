@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS measurements (
     electric_meter_id INT,
     measure FLOAT NOT NULL,
     measure_date_time DATETIME,
+    price FLOAT,
     CONSTRAINT PK_measurements PRIMARY KEY (id),
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );

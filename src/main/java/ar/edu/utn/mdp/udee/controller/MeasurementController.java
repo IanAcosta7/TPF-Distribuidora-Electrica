@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.LoginException;
 import java.net.URI;
 import java.time.LocalDateTime;
 
@@ -31,7 +32,7 @@ public class MeasurementController {
     }
 
     @PostMapping
-    public ResponseEntity<MeasurementDTO> add(@RequestBody NewMeasurementDTO newMeasurementDTO) {
+    public ResponseEntity<MeasurementDTO> add(@RequestBody NewMeasurementDTO newMeasurementDTO) throws LoginException {
         MeasurementDTO measurementDTO = measurementService.addMeasurement(newMeasurementDTO);
         return ResponseEntity.created(
                 URI.create(

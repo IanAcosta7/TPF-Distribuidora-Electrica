@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ElectricMeterRepository extends JpaRepository<ElectricMeter, Integer> {
+    ElectricMeter findBySerialNumberAndPassword(String serialNumber, String password);
 }

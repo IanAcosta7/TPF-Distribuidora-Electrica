@@ -98,7 +98,7 @@ public class ElectricMeterServiceTest {
     }
 
     private ElectricMeter getElectricMeter() {
-        return new ElectricMeter(1, "Test", null);
+        return new ElectricMeter(1, "Test", null, "Test");
     }
 
     private Page<ElectricMeter> getElectricMeterPage(Pageable pageable) {

@@ -20,5 +20,6 @@ public class ElectricMeter {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "model_id", referencedColumnName = "id")
     private MeterModel meterModel;
+    private String password;
 
 }

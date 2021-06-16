@@ -1,5 +1,7 @@
 package ar.edu.utn.mdp.udee.service;
 
+import ar.edu.utn.mdp.udee.model.ElectricMeter;
+import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.dto.address.AddressDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
@@ -11,8 +13,11 @@ import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
+import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
 
 @Service
@@ -20,18 +25,38 @@ public class MeasurementService {
 
     private final MeasurementRepository measurementRepository;
     private final ConversionService conversionService;
-    private final AddressService addressService;
+    private final ElectricMeterService electricMeterService;
+    private final TariffService tariffService;
 
     @Autowired
-    public MeasurementService(MeasurementRepository measurementRepository, ConversionService conversionService, AddressService addressService) {
+    public MeasurementService(MeasurementRepository measurementRepository, ConversionService conversionService, ElectricMeterService electricMeterService, TariffService tariffService) {
         this.measurementRepository = measurementRepository;
         this.conversionService = conversionService;
-        this.addressService = addressService;
+        this.electricMeterService = electricMeterService;
+        this.tariffService = tariffService;
     }
 
-    public MeasurementDTO addMeasurement(NewMeasurementDTO newMeasurementDTO) {
-        Measurement measurement = measurementRepository.save(conversionService.convert(newMeasurementDTO, Measurement.class));
-        return conversionService.convert(measurement, MeasurementDTO.class);
+    public MeasurementDTO addMeasurement(NewMeasurementDTO newMeasurementDTO) throws LoginException {
+        ElectricMeter electricMeter = electricMeterService.loginMeter(
+                newMeasurementDTO.getSerialNumber(),
+                newMeasurementDTO.getPassword())
+                .orElseThrow(() -> new LoginException("Wrong electric meter credentials."));
+
+        Tariff tariff = tariffService.getTariffFromMeter(electricMeter.getId());
+
+        Measurement lastMeasure = measurementRepository.getTopByElectricMeter(electricMeter.getId());
+
+        Float actualMeasure = newMeasurementDTO.getValue() - lastMeasure.getMeasure();
+
+        Measurement measurement = new Measurement(
+                null,
+                null,
+                electricMeter,
+                newMeasurementDTO.getValue(),
+                LocalDateTime.parse(newMeasurementDTO.getDate()),
+                tariff.getTariffValue() * actualMeasure
+        );
+        return conversionService.convert(measurementRepository.save(measurement), MeasurementDTO.class);
     }
 
     /**

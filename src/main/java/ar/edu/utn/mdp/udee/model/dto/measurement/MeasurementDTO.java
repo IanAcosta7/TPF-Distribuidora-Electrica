@@ -15,4 +15,5 @@ public class MeasurementDTO {
     private Integer electricMeterId;
     private Float measure;
     private LocalDateTime measureDateTime;
+    private Float price;
 }
