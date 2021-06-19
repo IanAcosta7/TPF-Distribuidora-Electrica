@@ -52,7 +52,7 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
             value =
                 "SELECT M.* FROM measurements M " +
                 "WHERE M.electric_meter_id = ?1 " +
-                "ORDER BY M.measure_date_time " +
+                "ORDER BY M.measure DESC, M.measure_date_time DESC, M.id DESC " +
                 "LIMIT 1",
             nativeQuery = true
     )

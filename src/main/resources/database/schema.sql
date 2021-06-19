@@ -95,21 +95,114 @@ CREATE TABLE IF NOT EXISTS measurements (
     CONSTRAINT PK_measurements PRIMARY KEY (id),
     CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
 );
+
+--------------------- INDEXES ---------------------
 CREATE INDEX IDX_measurements_electric_meters ON measurements (electric_meter_id) USING BTREE;
 
 ---------------- STORED PROCEDURES ----------------
 DELIMITER ;;
+DROP PROCEDURE IF EXISTS sp_get_top_consumers;
 CREATE PROCEDURE sp_get_top_consumers (IN _after DATETIME, IN _before DATETIME)
 BEGIN
-SELECT * FROM (
-  SELECT u.id, SUM(m.measure) consumed FROM users u
-    INNER JOIN addresses a ON u.id = a.client_id
-    INNER JOIN electric_meters em ON a.electric_meter_id = em.id
-    INNER JOIN measurements m ON em.id = m.electric_meter_id
-  WHERE m.measure_date_time BETWEEN _after AND _before
-    GROUP BY id
-    LIMIT 10
-) user_consumptions
-ORDER BY consumed DESC;
+    SELECT * FROM (
+        SELECT u.id, SUM(m.measure) consumed FROM users u
+        INNER JOIN addresses a ON u.id = a.client_id
+        INNER JOIN electric_meters em ON a.electric_meter_id = em.id
+        INNER JOIN measurements m ON em.id = m.electric_meter_id
+        WHERE m.measure_date_time BETWEEN _after AND _before
+        GROUP BY id
+        LIMIT 10
+    ) user_consumptions
+    ORDER BY consumed DESC;
 END;;
+DELIMITER ;
+
+DELIMITER ;;
+CREATE PROCEDURE sp_invoice_all_addresses()
+BEGIN
+
+    -- Cursor Values
+    DECLARE a_id INT;
+
+    -- Declare Cursor
+    DECLARE finished BOOLEAN DEFAULT FALSE;
+    DECLARE error_thrown BOOLEAN DEFAULT FALSE;
+    DECLARE addresses_cursor CURSOR FOR SELECT A.id FROM addresses A;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET finished = TRUE;
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION SET error_thrown = TRUE;
+
+    START TRANSACTION;
+
+    OPEN addresses_cursor;
+        addresses_cursor : LOOP
+
+            -- Iterate
+            FETCH addresses_cursor INTO a_id;
+            IF finished THEN
+                LEAVE addresses_cursor;
+            END IF;
+
+            -- Work
+            CALL sp_invoice_address(a_id);
+
+        END LOOP addresses_cursor;
+    CLOSE addresses_cursor;
+
+    IF error_thrown THEN
+        ROLLBACK;
+    ELSE
+        COMMIT;
+    END IF;
+
+END;;
+DELIMITER ;
+
+DELIMITER ;;
+CREATE PROCEDURE sp_invoice_address(IN _address_id INT)
+BEGIN
+
+    DECLARE _initial_measure INT;
+    DECLARE _last_measure INT;
+    DECLARE _consumption INT;
+    DECLARE _total INT;
+
+    CREATE TEMPORARY TABLE tmp_measurements_from_meter
+    (
+        SELECT M.* FROM measurements M
+        INNER JOIN electric_meters EM ON M.electric_meter_id = EM.id
+        INNER JOIN addresses A ON EM.id = A.electric_meter_id AND A.id = _address_id
+        WHERE M.bill_id IS NULL
+    );
+
+    SET _initial_measure = (SELECT MFM.id FROM tmp_measurements_from_meter MFM ORDER BY MFM.measure, MFM.measure_date_time, MFM.id LIMIT 1);
+    SET _last_measure = (SELECT MFM.id FROM tmp_measurements_from_meter MFM ORDER BY MFM.measure DESC, MFM.measure_date_time DESC, MFM.id DESC LIMIT 1);
+    SET _consumption = (SELECT MFM.measure FROM tmp_measurements_from_meter MFM WHERE MFM.id = _last_measure);
+    SET _total = (SELECT SUM(MFM.price) FROM tmp_measurements_from_meter MFM);
+
+    IF (SELECT COUNT(*) FROM tmp_measurements_from_meter) > 0 THEN
+        INSERT INTO bills
+        (
+        address_id,
+        bill_date,
+        amount_payed,
+        initial_measure,
+        final_measure,
+        consumption,
+        total
+        )
+        VALUES
+        (
+        _address_id,
+        CURRENT_DATE(),
+        0,
+        _initial_measure,
+        _last_measure,
+        _consumption,
+        _total
+        );
+    END IF;
+
+    DROP TABLE tmp_measurements_from_meter;
+
+END ;;
 DELIMITER ;

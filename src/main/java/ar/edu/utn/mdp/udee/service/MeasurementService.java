@@ -46,7 +46,12 @@ public class MeasurementService {
 
         Measurement lastMeasure = measurementRepository.getTopByElectricMeter(electricMeter.getId());
 
-        Float actualMeasure = newMeasurementDTO.getValue() - lastMeasure.getMeasure();
+        float actualMeasure;
+
+        if (lastMeasure != null)
+            actualMeasure = newMeasurementDTO.getValue() - lastMeasure.getMeasure();
+        else
+            actualMeasure = newMeasurementDTO.getValue();
 
         Measurement measurement = new Measurement(
                 null,
