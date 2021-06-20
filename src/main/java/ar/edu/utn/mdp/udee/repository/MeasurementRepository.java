@@ -32,8 +32,7 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
     @Query(
             value =
                 "SELECT M FROM Measurement M " +
-                "WHERE M.bill IS NOT NULL " +
-                "AND M.measureDateTime BETWEEN ?1 AND ?2 "
+                "WHERE M.measureDateTime BETWEEN ?1 AND ?2 "
     )
     Page<Measurement> findRange(LocalDateTime since, LocalDateTime until, Pageable pageable);
 
@@ -42,11 +41,20 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
                 "SELECT M FROM Measurement M " +
                 "INNER JOIN ElectricMeter EM ON M.electricMeter.id = EM.id " +
                 "INNER JOIN Address A ON EM.id = A.electricMeter.id " +
-                "WHERE M.bill IS NOT NULL " +
-                "AND M.measureDateTime BETWEEN ?1 AND ?2 " +
+                "WHERE M.measureDateTime BETWEEN ?1 AND ?2 " +
                 "AND A.client.id = ?3 "
     )
     Page<Measurement> findRangeFromUser(LocalDateTime since, LocalDateTime until, Integer userId, Pageable pageable);
+
+    @Query(
+            value =
+                "SELECT M FROM Measurement M " +
+                "INNER JOIN ElectricMeter EM ON M.electricMeter.id = EM.id " +
+                "INNER JOIN Address A ON EM.id = A.electricMeter.id " +
+                "WHERE M.measureDateTime BETWEEN ?1 AND ?2 " +
+                "AND A.id = ?3 "
+    )
+    Page<Measurement> findRangeFromAddress(LocalDateTime since, LocalDateTime until, Integer addressId, Pageable pageable);
 
     @Query(
             value =

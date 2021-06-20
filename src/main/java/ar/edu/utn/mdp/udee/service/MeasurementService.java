@@ -95,6 +95,12 @@ public class MeasurementService {
         return conversionService.convert(measurementRepository.findById(id).orElse(null), MeasurementDTO.class);
     }
 
+    public PaginationResponse<MeasurementDTO> getAllByAddressId(Integer addressId, Pageable pageable, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
+        Page<Measurement> measurementPage = measurementRepository.findRangeFromAddress(sinceMeasureDateTime, untilMeasureDateTime, addressId, pageable);
+        Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
+        return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
+    }
+
     public PaginationResponse<MeasurementDTO> getAllByUserId(Integer id, Integer page, Integer size) {
         Pageable pageable = PageRequest.of(page, size);
         Page<Measurement> measurementPage = measurementRepository.findByUserId(id, pageable);

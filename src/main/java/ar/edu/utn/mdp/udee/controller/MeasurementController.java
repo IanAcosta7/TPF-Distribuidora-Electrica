@@ -71,6 +71,23 @@ public class MeasurementController {
         return ResponseEntity.ok(paginationResponse);
     }
 
+    @GetMapping(AddressController.PATH + "/{id}")
+    public ResponseEntity<PaginationResponse<MeasurementDTO>> getAllByAddressId(
+            @PathVariable Integer id,
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "size", defaultValue = "50") Integer size,
+            @RequestBody DateRangeDTO dateRangeDTO
+    ) {
+        return ResponseEntity.ok(
+                measurementService.getAllByAddressId(
+                        id,
+                        PageRequest.of(page, size),
+                        LocalDateTime.parse(dateRangeDTO.getSince()),
+                        LocalDateTime.parse(dateRangeDTO.getUntil())
+                )
+        );
+    }
+
     @GetMapping(UserController.PATH + "/{id}")
     public ResponseEntity<PaginationResponse<MeasurementDTO>> getAllByUserId(
             @PathVariable Integer id,

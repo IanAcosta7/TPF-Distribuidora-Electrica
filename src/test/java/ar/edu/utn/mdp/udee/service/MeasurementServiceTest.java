@@ -94,7 +94,7 @@ public class MeasurementServiceTest {
     }
 
     @Test
-    public void getAllTest_FromUser() {
+    public void getAll_FromUserTest() {
         // Arrange
         Integer pageNumber = 0;
         Integer pageSize = 50;
@@ -124,6 +124,26 @@ public class MeasurementServiceTest {
 
         // Assert
         Assert.assertNotNull(result);
+    }
+
+    @Test
+    public void getAllByAddressIdTest() {
+        // Arrange
+        Integer addressId = 1;
+        Integer pageNumber = 0;
+        Integer pageSize = 50;
+        Pageable pageable = getPageable(pageNumber, pageSize);
+        LocalDateTime time = LocalDateTime.now();
+        MeasurementDTO measurementDTO = getMeasurementDTO();
+        Mockito.when(measurementRepositoryMock.findRangeFromAddress(time, time, addressId, pageable)).thenReturn(getMeasurementPage(pageable));
+        Mockito.when(conversionServiceMock.convert(Mockito.any(Measurement.class), eq(MeasurementDTO.class))).thenReturn(measurementDTO);
+
+        // Act
+        PaginationResponse<MeasurementDTO> result = measurementService.getAllByAddressId(addressId, pageable, time, time);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(measurementDTO, result.getContent().get(0));
     }
 
     private NewMeasurementDTO getNewMeasurementDTO() {
