@@ -1,0 +1,1 @@
+CREATE INDEX IDX_measurements_electric_meters ON measurements (electric_meter_id) USING BTREE;
