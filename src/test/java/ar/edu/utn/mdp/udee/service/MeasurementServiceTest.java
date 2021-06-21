@@ -3,6 +3,7 @@ package ar.edu.utn.mdp.udee.service;
 
 import ar.edu.utn.mdp.udee.model.ElectricMeter;
 import ar.edu.utn.mdp.udee.model.Tariff;
+import ar.edu.utn.mdp.udee.model.dto.consumption.ConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.Measurement;
@@ -146,6 +147,25 @@ public class MeasurementServiceTest {
         Assertions.assertEquals(measurementDTO, result.getContent().get(0));
     }
 
+    @Test
+    public void getConsumptionTest() {
+        // Arrange
+        int clientId = 1;
+        LocalDateTime time = LocalDateTime.now();
+        ConsumptionDTO consumptionDTO = getConsumptionDTO();
+        List<Measurement> measurementList = getMeasurementList();
+
+        Mockito.when(measurementRepositoryMock.getRangeOfInvoicedMeasurementsByUser(clientId, time, time)).thenReturn(measurementList);
+        Mockito.when(measurementRepositoryMock.findById(0)).thenReturn(Optional.of(getMeasurement()));
+
+        // Act
+        ConsumptionDTO result = measurementService.getConsumption(clientId, time, time);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(consumptionDTO, result);
+    }
+
     private NewMeasurementDTO getNewMeasurementDTO() {
         return new NewMeasurementDTO("Test", 10f, LocalDateTime.now().toString(), "Test");
     }
@@ -156,6 +176,12 @@ public class MeasurementServiceTest {
 
     private Measurement getMeasurement() {
         return new Measurement(1, null, null, 0.5f, LocalDateTime.now(), 5f);
+    }
+
+    private List<Measurement> getMeasurementList() {
+        List<Measurement> measurementList = new ArrayList<>();
+        measurementList.add(getMeasurement());
+        return measurementList;
     }
 
     private Page<Measurement> getMeasurementPage(Pageable pageable) {
@@ -189,6 +215,10 @@ public class MeasurementServiceTest {
                 null,
                 5f
         );
+    }
+
+    private ConsumptionDTO getConsumptionDTO() {
+        return new ConsumptionDTO(0f, 5f);
     }
 
 }

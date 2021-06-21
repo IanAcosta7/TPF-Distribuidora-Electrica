@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.controller;
 
+import ar.edu.utn.mdp.udee.model.dto.consumption.ConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.range.DateRangeDTO;
 import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.TestInstance;
 import org.mockito.Mockito;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,6 +51,24 @@ public class MeasurementControllerTest {
         Assertions.assertEquals(response, result.getBody());
     }
 
+    @Test
+    public void getConsumption() {
+        // Arrange
+        Integer id = 1;
+        Authentication auth = new TestingAuthenticationToken(id, null);
+        DateRangeDTO dateRangeDTO = getDateRangeDTO();
+        ConsumptionDTO consumptionDTO = getConsumptionDTO();
+
+        Mockito.when(measurementServiceMock.getConsumption(id, LocalDateTime.parse(dateRangeDTO.getSince()), LocalDateTime.parse(dateRangeDTO.getUntil()))).thenReturn(consumptionDTO);
+
+        // Act
+        ResponseEntity<ConsumptionDTO> result = measurementController.getConsumption(auth, dateRangeDTO);
+
+        // Assert
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(consumptionDTO, result.getBody());
+    }
+
     private PaginationResponse<MeasurementDTO> getMeasurementDTOPaginationResponse() {
         List<MeasurementDTO> measurementDTOList = new ArrayList<>();
         measurementDTOList.add(getMeasurementDTO());
@@ -64,6 +85,10 @@ public class MeasurementControllerTest {
 
     private DateRangeDTO getDateRangeDTO() {
         return new DateRangeDTO("2020-01-01T00:00:00", "2021-01-01T00:00:00");
+    }
+
+    private ConsumptionDTO getConsumptionDTO() {
+        return new ConsumptionDTO(0f, 5f);
     }
 
 }

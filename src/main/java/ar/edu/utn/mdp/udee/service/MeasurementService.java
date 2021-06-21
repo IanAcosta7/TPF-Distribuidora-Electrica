@@ -3,6 +3,7 @@ package ar.edu.utn.mdp.udee.service;
 import ar.edu.utn.mdp.udee.model.ElectricMeter;
 import ar.edu.utn.mdp.udee.model.Tariff;
 import ar.edu.utn.mdp.udee.model.dto.address.AddressDTO;
+import ar.edu.utn.mdp.udee.model.dto.consumption.ConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.Measurement;
@@ -19,6 +20,8 @@ import org.springframework.web.client.HttpClientErrorException;
 
 import javax.security.auth.login.LoginException;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class MeasurementService {
@@ -106,5 +109,24 @@ public class MeasurementService {
         Page<Measurement> measurementPage = measurementRepository.findByUserId(id, pageable);
         Page<MeasurementDTO> measurementDTOPage = measurementPage.map(measurement -> conversionService.convert(measurement, MeasurementDTO.class));
         return new PaginationResponse<>(measurementDTOPage.getContent(), measurementDTOPage.getTotalPages(), measurementDTOPage.getTotalElements());
+    }
+
+    public ConsumptionDTO getConsumption(int clientId, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime) {
+        List<Measurement> measurementList = measurementRepository.getRangeOfInvoicedMeasurementsByUser(clientId, sinceMeasureDateTime, untilMeasureDateTime);
+
+        if (measurementList.size() < 1)
+            return null;
+
+        float totalPrice = 0;
+
+        for (int i = 0; i < measurementList.size(); i++) {
+            totalPrice += measurementList.get(i).getPrice();
+        }
+
+        // This is not ok, partial consumption should be saved for each measurement...
+        Measurement previousMeasure = measurementRepository.findById(measurementList.get(0).getId() - 1).orElse(null);
+        Float totalConsumption = measurementList.get(measurementList.size() - 1).getMeasure() - (previousMeasure == null ? 0 : previousMeasure.getMeasure());
+
+        return new ConsumptionDTO(totalConsumption, totalPrice);
     }
 }

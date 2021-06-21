@@ -1,6 +1,5 @@
 package ar.edu.utn.mdp.udee;
 
-import ar.edu.utn.mdp.udee.controller.ElectricMeterController;
 import ar.edu.utn.mdp.udee.controller.MeasurementController;
 import ar.edu.utn.mdp.udee.controller.UserController;
 import ar.edu.utn.mdp.udee.util.JWTAuthorizationFilter;
@@ -31,6 +30,7 @@ public class UDEE {
 					.antMatchers(HttpMethod.POST, UserController.PATH + UserController.LOGIN_PATH).permitAll()
 					.antMatchers(HttpMethod.POST, MeasurementController.PATH).permitAll()
 					.antMatchers(HttpMethod.GET, MeasurementController.PATH).authenticated()
+					.antMatchers(HttpMethod.GET, MeasurementController.PATH + MeasurementController.CONSUMPTION_PATH).permitAll()
 					.anyRequest().hasRole("EMPLOYEE");
 		}
 	}

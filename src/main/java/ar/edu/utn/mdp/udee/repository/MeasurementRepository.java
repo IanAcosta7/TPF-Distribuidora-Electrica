@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Repository
 public interface MeasurementRepository extends JpaRepository<Measurement, Integer> {
@@ -66,4 +67,16 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
     )
     Measurement getTopByElectricMeter(Integer electricMeterId);
 
+    @Query(
+            value =
+                "SELECT M.* FROM measurements M " +
+                "INNER JOIN electric_meters EM ON M.electric_meter_id = EM.id " +
+                "INNER JOIN addresses A ON EM.id = A.electric_meter_id " +
+                "WHERE A.client_id = ?1 " +
+                "AND M.measure_date_time BETWEEN ?2 AND ?3 " +
+                "AND M.bill_id IS NOT NULL " +
+                "ORDER BY M.measure",
+            nativeQuery = true
+    )
+    List<Measurement> getRangeOfInvoicedMeasurementsByUser(int clientId, LocalDateTime sinceMeasureDateTime, LocalDateTime untilMeasureDateTime);
 }

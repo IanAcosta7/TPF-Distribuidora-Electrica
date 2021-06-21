@@ -1,5 +1,6 @@
 package ar.edu.utn.mdp.udee.controller;
 
+import ar.edu.utn.mdp.udee.model.dto.consumption.ConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.MeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.measurement.NewMeasurementDTO;
 import ar.edu.utn.mdp.udee.model.dto.range.DateRangeDTO;
@@ -7,7 +8,9 @@ import ar.edu.utn.mdp.udee.model.response.PaginationResponse;
 import ar.edu.utn.mdp.udee.service.MeasurementService;
 import ar.edu.utn.mdp.udee.util.EntityURLBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,6 +26,7 @@ import java.time.LocalDateTime;
 public class MeasurementController {
 
     public final static String PATH = "/measurements";
+    public final static String CONSUMPTION_PATH = "/consumption";
 
     private final MeasurementService measurementService;
 
@@ -102,4 +106,21 @@ public class MeasurementController {
         return ResponseEntity.ok(measurementService.getById(id));
     }
 
+    @GetMapping(MeasurementController.CONSUMPTION_PATH)
+    public ResponseEntity<ConsumptionDTO> getConsumption(
+            Authentication auth,
+            @RequestBody DateRangeDTO dateRangeDTO
+    ) {
+        ConsumptionDTO consumptionDTO = measurementService.getConsumption(
+                (int)auth.getPrincipal(),
+                LocalDateTime.parse(dateRangeDTO.getSince()),
+                LocalDateTime.parse(dateRangeDTO.getUntil())
+        );
+
+        if (consumptionDTO == null)
+            throw new EmptyResultDataAccessException("The user does not have any measurements in the selected range.", 1);
+
+        return ResponseEntity.ok(consumptionDTO);
+    }
 }
+
