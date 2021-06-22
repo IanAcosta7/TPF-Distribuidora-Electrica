@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,21 +22,24 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity<Object> handleConstraintViolation(ConstraintViolationException ex, WebRequest request) {
         List<String> errors = new ArrayList<>();
-
         for (ConstraintViolation violation : ex.getConstraintViolations()) {
             errors.add(violation.getMessage());
         }
-
         return new ResponseEntity<>(new UDEEError(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({EmptyResultDataAccessException.class})
     public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
         List<String> errors = new ArrayList<>();
-
         errors.add(ex.getMessage());
-
         return new ResponseEntity<>(new UDEEError(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({DateTimeParseException.class})
+    public ResponseEntity<Object> handleDateTimeParseException(DateTimeParseException ex, WebRequest request) {
+        List<String> errors = new ArrayList<>();
+        errors.add(ex.getMessage());
+        return new ResponseEntity<>(new UDEEError(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
 }
