@@ -1,7 +1,6 @@
 package ar.edu.utn.mdp.udee.controller;
 
 import ar.edu.utn.mdp.udee.model.dto.range.DateRangeDTO;
-import ar.edu.utn.mdp.udee.model.dto.user.UserConsumptionDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserLoginDTO;
 import ar.edu.utn.mdp.udee.model.dto.user.UserTypeDTO;
 import ar.edu.utn.mdp.udee.model.projection.UserConsumptionProjection;
@@ -115,7 +114,13 @@ public class UserController {
 
     @GetMapping(TYPE_PATH + "/{id}")
     public ResponseEntity<UserTypeDTO> getUserTypeById(@PathVariable Integer id) {
-        return ResponseEntity.ok(userTypeService.getById(id));
+        UserTypeDTO userTypeDTO = userTypeService.getById(id);
+
+        if (userTypeDTO != null) {
+            return ResponseEntity.ok(userTypeDTO);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping("/consumers")

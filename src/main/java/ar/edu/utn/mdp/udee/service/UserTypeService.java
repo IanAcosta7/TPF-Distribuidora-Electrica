@@ -40,6 +40,7 @@ public class UserTypeService {
     }
 
     public UserTypeDTO getById(Integer id) {
-        return conversionService.convert(userTypeRepository.findById(id), UserTypeDTO.class);
+        UserType userType = userTypeRepository.findById(id).orElse(null);
+        return userType != null ? conversionService.convert(userType, UserTypeDTO.class) : null;
     }
 }

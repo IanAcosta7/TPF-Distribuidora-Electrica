@@ -1,14 +1,14 @@
 package ar.edu.utn.mdp.udee.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "user_types")

@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TariffTypeService {
 
-    private TariffTypeRepository tariffTypeRepository;
-    private ConversionService conversionService;
+    private final TariffTypeRepository tariffTypeRepository;
+    private final ConversionService conversionService;
 
     @Autowired
     public TariffTypeService(TariffTypeRepository tariffTypeRepository, ConversionService conversionService) {

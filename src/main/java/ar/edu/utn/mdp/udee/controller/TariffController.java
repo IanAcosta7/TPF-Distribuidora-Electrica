@@ -65,7 +65,13 @@ public class TariffController {
 
     @GetMapping(TYPE_PATH + "/{id}")
     public ResponseEntity<TariffTypeDTO> getTariffTypeById(@PathVariable Integer id) {
-        return ResponseEntity.ok(tariffTypeService.getTariffTypeById(id));
+        TariffTypeDTO tariffTypeDTO = tariffTypeService.getTariffTypeById(id);
+
+        if (tariffTypeDTO != null) {
+            return ResponseEntity.ok(tariffTypeDTO);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @PostMapping(TYPE_PATH)

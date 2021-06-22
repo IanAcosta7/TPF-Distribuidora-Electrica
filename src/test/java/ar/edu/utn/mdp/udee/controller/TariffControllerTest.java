@@ -126,6 +126,20 @@ public class TariffControllerTest {
     }
 
     @Test
+    public void getTariffTypeById_NoContentTest() {
+        // Arrange
+        Integer id = 1;
+        Mockito.when(tariffTypeServiceMock.getTariffTypeById(id)).thenReturn(null);
+
+        // Act
+        ResponseEntity<TariffTypeDTO> result = tariffController.getTariffTypeById(id);
+
+        // Assert
+        Assertions.assertNull(result.getBody());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getStatusCode());
+    }
+
+    @Test
     public void addTariffTypeTest() {
         // Arrange
         TariffTypeDTO tariffTypeDTO = getTariffTypeDTO();
