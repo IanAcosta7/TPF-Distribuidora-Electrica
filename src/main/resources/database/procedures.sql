@@ -1,4 +1,3 @@
-DROP PROCEDURE sp_create_adjustment_bill;
 DELIMITER ;;
 CREATE PROCEDURE sp_create_adjustment_bill(IN _electric_meter_id INT, IN _old_tariff_value FLOAT, IN _new_tariff_value FLOAT)
 BEGIN
@@ -69,7 +68,6 @@ END;;
 DELIMITER ;
 
 DELIMITER ;;
-DROP PROCEDURE IF EXISTS sp_get_top_consumers;
 CREATE PROCEDURE sp_get_top_consumers (IN _after DATETIME, IN _before DATETIME)
 BEGIN
     SELECT * FROM (

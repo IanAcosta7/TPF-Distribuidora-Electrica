@@ -1,6 +1,6 @@
 --DROP DATABASE udee;
 --CREATE DATABASE udee;
-USE udee;
+--USE udee;
 
 CREATE TABLE IF NOT EXISTS tariff_types (
     id INT NOT NULL AUTO_INCREMENT,
@@ -70,6 +70,15 @@ CREATE TABLE IF NOT EXISTS addresses (
     CONSTRAINT UNQ_electric_meter_id UNIQUE (electric_meter_id)
 );
 
+CREATE TABLE IF NOT EXISTS measurements (
+    id INT NOT NULL AUTO_INCREMENT,
+    electric_meter_id INT,
+    measure FLOAT NOT NULL,
+    measure_date_time DATETIME,
+    price FLOAT,
+    CONSTRAINT PK_measurements PRIMARY KEY (id)
+);
+
 CREATE TABLE IF NOT EXISTS bills (
     id INT NOT NULL AUTO_INCREMENT,
     address_id INT,
@@ -85,13 +94,5 @@ CREATE TABLE IF NOT EXISTS bills (
     CONSTRAINT FK_bills_final_measurement FOREIGN KEY (final_measure_id) REFERENCES measurements(id)
 );
 
-CREATE TABLE IF NOT EXISTS measurements (
-    id INT NOT NULL AUTO_INCREMENT,
-    bill_id INT,
-    electric_meter_id INT,
-    measure FLOAT NOT NULL,
-    measure_date_time DATETIME,
-    price FLOAT,
-    CONSTRAINT PK_measurements PRIMARY KEY (id),
-    CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE
-);
+ALTER TABLE measurements ADD COLUMN bill_id INT;
+ALTER TABLE measurements ADD CONSTRAINT FK_measurements_bills FOREIGN KEY (bill_id) REFERENCES bills(id) ON DELETE CASCADE;
