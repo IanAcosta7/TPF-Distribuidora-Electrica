@@ -168,6 +168,8 @@ BEGIN
             _consumption,
             _total
         );
+
+        UPDATE measurements M SET M.bill_id = LAST_INSERT_ID() WHERE M.id IN (SELECT MFM.id FROM tmp_measurements_from_meter MFM);
     END IF;
 
     DROP TABLE tmp_measurements_from_meter;
