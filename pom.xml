@@ -81,7 +81,6 @@
 			<artifactId>jjwt</artifactId>
 			<version>0.9.1</version>
 		</dependency>
-<!-- -->
 	</dependencies>
 
 	<build>
@@ -132,10 +131,11 @@
 						</goals>
 						<configuration>
 							<excludes>
-								<exclude>**/edu/utn/mdp/udee*</exclude>
-								<exclude>**/edu/utn/mdp/udee/domain/*</exclude>
-								<exclude>**/edu/utn/mdp/udee/configuration/*</exclude>
-								<exclude>**/edu/utn/mdp/udee/controller/*</exclude>
+								<exclude>**/ar/edu/utn/mdp/udee/*</exclude>
+								<exclude>**/ar/edu/utn/mdp/udee/model/**</exclude>
+								<exclude>**/ar/edu/utn/mdp/udee/converter/**</exclude>
+								<exclude>**/ar/edu/utn/mdp/udee/util/**</exclude>
+								<exclude>**/ar/edu/utn/mdp/udee/config/**</exclude>
 							</excludes>
 							<rules>
 								<rule>
@@ -144,7 +144,7 @@
 										<limit>
 											<counter>INSTRUCTION</counter>
 											<value>COVEREDRATIO</value>
-											<minimum>0</minimum>
+											<minimum>0.7</minimum>
 										</limit>
 									</limits>
 								</rule>
