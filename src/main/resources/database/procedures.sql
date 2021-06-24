@@ -70,16 +70,14 @@ DELIMITER ;
 DELIMITER ;;
 CREATE PROCEDURE sp_get_top_consumers (IN _after DATETIME, IN _before DATETIME)
 BEGIN
-    SELECT * FROM (
-        SELECT u.id, SUM(m.measure) consumed FROM users u
-        INNER JOIN addresses a ON u.id = a.client_id
-        INNER JOIN electric_meters em ON a.electric_meter_id = em.id
-        INNER JOIN measurements m ON em.id = m.electric_meter_id
-        WHERE m.measure_date_time BETWEEN _after AND _before
-        GROUP BY id
-        LIMIT 10
-    ) user_consumptions
-    ORDER BY consumed DESC;
+    SELECT u.id, SUM(m.measure) consumed FROM users u
+    INNER JOIN addresses a ON u.id = a.client_id
+    INNER JOIN electric_meters em ON a.electric_meter_id = em.id
+    INNER JOIN measurements m ON em.id = m.electric_meter_id
+    WHERE m.measure_date_time BETWEEN _after AND _before
+    GROUP BY id
+    ORDER BY consumed DESC
+    LIMIT 10;
 END;;
 DELIMITER ;
 
