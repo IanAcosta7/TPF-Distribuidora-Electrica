@@ -54,6 +54,16 @@
   "meter_brands": [
     {
       "id": 1,
+      "meter_models": [
+        {
+          "id": 1,
+          "brand": {
+            "id": 1,
+            "brand_name": "BRAND 1"
+          },
+          "model_name": "MODEL 1"
+        }
+      ],
       "brand_name": "BRAND 1"
     }
   ]
@@ -129,40 +139,8 @@
       "bills": [
         {
           "id": 1,
-          "initial_measurement": {
-            "id": 1,
-            "measure": 1.0,
-            "measure_date_time": "2021-05-12T20:53:13",
-            "price": 50.0,
-            "electric_meter": {
-              "id": 1,
-              "address": {
-                "id": 1,
-                "user": {
-                  "id": 1,
-                  "role": "ROLE_CLIENT"
-                }
-              }
-            }
-          },
-          "last_measurement": {
-            "id": 3,
-            "measure": 2.0,
-            "measure_date_time": "2021-05-12T20:53:13",
-            "price": 50.0,
-            "electric_meter": {
-              "id": 1,
-              "address": {
-                "id": 1,
-                "user": {
-                  "id": 1,
-                  "role": "ROLE_CLIENT"
-                }
-              }
-            }
-          },
           "bill_date": "2021-05-12T20:53:13",
-          "amount_payed": 500.0,
+          "amount_payed": 30.0,
           "consumption": 30.0,
           "total": 30.0
         }
@@ -247,7 +225,7 @@
         }
       },
       "bill_date": "2021-05-12T20:53:13",
-      "amount_payed": 500.0,
+      "amount_payed": 30.0,
       "consumption": 30.0,
       "total": 30.0
     }
@@ -267,7 +245,6 @@
           "id": 1,
           "user": {
             "id": 1,
-            "role": "ROLE_CLIENT"
           }
         }
       }
@@ -283,7 +260,6 @@
           "id": 1,
           "user": {
             "id": 1,
-            "role": "ROLE_CLIENT"
           }
         }
       }
@@ -299,7 +275,6 @@
           "id": 1,
           "user": {
             "id": 1,
-            "role": "ROLE_CLIENT"
           }
         }
       }
