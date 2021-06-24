@@ -1,0 +1,308 @@
+
+{
+  "tariff_types": [
+    {
+      "id": 1,
+      "type_name": "Tariff A"
+    }
+  ]
+}
+
+{
+  "tariffs": [
+    {
+      "id": 1,
+      "tariff_type": {
+        "id": 1,
+        "type_name": "Tariff A"
+      },
+      "tariff_value": 0.5
+    }
+  ]
+}
+
+{
+  "user_types": [
+    {
+      "id": 1,
+      "type_name": "ROLE_EMPLOYEE"
+    },
+    {
+      "id": 2,
+      "type_name": "ROLE_CLIENT"
+    }
+  ]
+}
+
+{
+  "users": [
+    {
+      "id": 1,
+      "user_type": {
+        "id": 2,
+        "type_name": "ROLE_CLIENT"
+      },
+      "username": "user1",
+      "password": "1234",
+      "first_name": "Jose",
+      "last_name": "Perez"
+    }
+  ]
+}
+
+{
+  "meter_brands": [
+    {
+      "id": 1,
+      "brand_name": "BRAND 1"
+    }
+  ]
+}
+
+{
+  "meter_models": [
+    {
+      "id": 1,
+      "brand": {
+        "id": 1,
+        "brand_name": "BRAND 1"
+      },
+      "model_name": "MODEL 1"
+    }
+  ]
+}
+
+{
+  "electric_meters": [
+    {
+      "id": 1,
+      "model": {
+        "id": 1,
+        "brand": {
+          "id": 1,
+          "brand_name": "BRAND 1"
+        },
+        "model_name": "MODEL 1"
+      },
+      "serial_number": "AAAA-AAAA-AAAA",
+      "password": "1234"
+    }
+  ]
+}
+
+{
+  "addresses": [
+    {
+      "id": 1,
+      "tariff": {
+        "id": 1,
+        "tariff_type": {
+          "id": 1,
+          "type_name": "Tariff A"
+        },
+        "tariff_value": 0.5
+      },
+      "electric_meter": {
+        "id": 1,
+        "model": {
+          "id": 1,
+          "brand": {
+            "id": 1,
+            "brand_name": "BRAND 1"
+          },
+          "model_name": "MODEL 1"
+        },
+        "serial_number": "AAAA-AAAA-AAAA",
+        "password": "1234"
+      },
+      "client": {
+        "id": 1,
+        "user_type": {
+          "id": 2,
+          "type_name": "ROLE_CLIENT"
+        },
+        "username": "user1",
+        "password": "1234",
+        "first_name": "Jose",
+        "last_name": "Perez"
+      },
+      "bills": [
+        {
+          "id": 1,
+          "initial_measurement": {
+            "id": 1,
+            "measure": 1.0,
+            "measure_date_time": "2021-05-12T20:53:13",
+            "price": 50.0,
+            "electric_meter": {
+              "id": 1,
+              "address": {
+                "id": 1,
+                "user": {
+                  "id": 1,
+                  "role": "ROLE_CLIENT"
+                }
+              }
+            }
+          },
+          "last_measurement": {
+            "id": 3,
+            "measure": 2.0,
+            "measure_date_time": "2021-05-12T20:53:13",
+            "price": 50.0,
+            "electric_meter": {
+              "id": 1,
+              "address": {
+                "id": 1,
+                "user": {
+                  "id": 1,
+                  "role": "ROLE_CLIENT"
+                }
+              }
+            }
+          },
+          "bill_date": "2021-05-12T20:53:13",
+          "amount_payed": 500.0,
+          "consumption": 30.0,
+          "total": 30.0
+        }
+      ],
+      "street": "Baker Street",
+      "address_number": "221B"
+    }
+  ]
+}
+
+{
+  "bills": [
+    {
+      "id": 1,
+      "address": {
+        "id": 1,
+        "tariff": {
+          "id": 1,
+          "tariff_type": {
+            "id": 1,
+            "type_name": "Tariff A"
+          },
+          "tariff_value": 0.5
+        },
+        "electric_meter": {
+          "id": 1,
+          "model": {
+            "id": 1,
+            "brand": {
+              "id": 1,
+              "brand_name": "BRAND 1"
+            },
+            "model_name": "MODEL 1"
+          },
+          "serial_number": "AAAA-AAAA-AAAA",
+          "password": "1234"
+        },
+        "client": {
+          "id": 1,
+          "user_type": {
+            "id": 2,
+            "type_name": "ROLE_CLIENT"
+          },
+          "username": "user1",
+          "password": "1234",
+          "first_name": "Jose",
+          "last_name": "Perez"
+        },
+        "street": "Baker Street",
+        "address_number": "221B"
+      },
+      "initial_measurement": {
+        "id": 1,
+        "measure": 1.0,
+        "measure_date_time": "2021-05-12T20:53:13",
+        "price": 50.0,
+        "electric_meter": {
+          "id": 1,
+          "address": {
+            "id": 1,
+            "user": {
+              "id": 1,
+              "role": "ROLE_CLIENT"
+            }
+          }
+        }
+      },
+      "last_measurement": {
+        "id": 3,
+        "measure": 2.0,
+        "measure_date_time": "2021-05-12T20:53:13",
+        "price": 50.0,
+        "electric_meter": {
+          "id": 1,
+          "address": {
+            "id": 1,
+            "user": {
+              "id": 1,
+              "role": "ROLE_CLIENT"
+            }
+          }
+        }
+      },
+      "bill_date": "2021-05-12T20:53:13",
+      "amount_payed": 500.0,
+      "consumption": 30.0,
+      "total": 30.0
+    }
+  ]
+}
+
+{
+  "measurements": [
+    {
+      "id": 1,
+      "measure": 1.0,
+      "measure_date_time": "2021-05-12T20:53:13",
+      "price": 50.0,
+      "electric_meter": {
+        "id": 1,
+        "address": {
+          "id": 1,
+          "user": {
+            "id": 1,
+            "role": "ROLE_CLIENT"
+          }
+        }
+      }
+    },
+    {
+      "id": 2,
+      "measure": 1.5,
+      "measure_date_time": "2021-05-12T20:53:13",
+      "price": 50.0,
+      "electric_meter": {
+        "id": 1,
+        "address": {
+          "id": 1,
+          "user": {
+            "id": 1,
+            "role": "ROLE_CLIENT"
+          }
+        }
+      }
+    },
+    {
+      "id": 3,
+      "measure": 2.0,
+      "measure_date_time": "2021-05-12T20:53:13",
+      "price": 50.0,
+      "electric_meter": {
+        "id": 1,
+        "address": {
+          "id": 1,
+          "user": {
+            "id": 1,
+            "role": "ROLE_CLIENT"
+          }
+        }
+      }
+    }
+  ]
+}
